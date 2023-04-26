@@ -19,7 +19,7 @@ namespace XPOS_API.Controllers
         {
             this.db = _db;
         }
-
+        //get all   
         [HttpGet("GetAllCategory")]
         public List<TblCategory> GetAllCategory()
         {
@@ -29,7 +29,7 @@ namespace XPOS_API.Controllers
 
             return dataCategory;
         }
-
+        //get id
         [HttpGet("GetById/{id}")]
         public TblCategory GetById(int id)
         {
@@ -39,7 +39,6 @@ namespace XPOS_API.Controllers
 
             return dataCategory;
         }
-
         //Post
         [HttpPost("PostCategory")]
         public VMRespons PostCategory(TblCategory data)
