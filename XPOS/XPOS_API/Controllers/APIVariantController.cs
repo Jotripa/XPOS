@@ -98,7 +98,7 @@ namespace XPOS_API.Controllers
                 try
                 {
                     db.Update(dataOld);
-                    db.SaveChanges();
+                    db.SaveChanges(true);
                     respons.Message = "Data Success Updated";
                 }
                 catch (Exception ex)
@@ -114,7 +114,7 @@ namespace XPOS_API.Controllers
             }
             return respons;
         }
-        [HttpDelete("DeleteVariant")]
+        [HttpDelete("DeleteVariant/{id}")]
         public VMRespons DeleteVariant(int id)
         {
             TblVariant data = db.TblVariants.Where(a => a.Id == id).FirstOrDefault();

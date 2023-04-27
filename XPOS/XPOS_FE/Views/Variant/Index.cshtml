@@ -1,0 +1,45 @@
+﻿@using XPOS_API.Models;
+@using XPOS_ViewModels;
+@model List<VMVariant>
+
+<h1>Variant List</h1>
+<a class="btn btn-primary" asp-controller="Variant" asp-action="Create">Create</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">IdCategory</th>
+            <th scope="col">Name Category</th>
+            <th scope="col">Name Variant</th>
+            <th scope="col">Description</th>
+            <th scope="col">Action</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (VMVariant item in Model)
+        {
+            <tr>
+                <th scope="row">@item.Id</th>
+                <td>@item.IdCategory</td>
+                <td>@item.NameCategory</td>
+                <td>@item.NameVariant</td>
+                <td>@item.Description</td>
+                <td>
+                    <a class="btn btn-success" asp-controller="Variant" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-warning" asp-controller="Variant" asp-action="Detail" asp-route-id="@item.Id">Detail</a>
+                    <a class="btn btn-danger" asp-controller="Variant" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="card-footer clearfix">
+    <ul class="pagination pagination-sm m-0 float-right">
+        <li class="page-item"><a class="page-link" href="#">«</a></li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">»</a></li>
+    </ul>
+</div>

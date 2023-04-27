@@ -5,29 +5,38 @@
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">id</th>
-            <th scope="col">nama category</th>
-            <th scope="col">description</th>
+            <th scope="col">Id</th>
+            <th scope="col">Name Category</th>
+            <th scope="col">Description</th>
             <th scope="col">Action</th>
 
         </tr>
     </thead>
     <tbody>
-        @foreach(TblCategory item in Model)
-        {        
-        <tr>
-            <th scope="row">@item.Id</th>
-            <td>@item.NameCategory</td>
-            <td>@item.Description</td>
-            <td>
-                <a class="btn btn-success" asp-controller="Category" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                <a class="btn btn-warning" asp-controller="Category" asp-action="Detail" asp-route-id="@item.Id">Detail</a>
-                <a class="btn btn-danger" asp-controller="Category" asp-action="Delete">Delete</a>
-            </td>
-        </tr>
+        @foreach (TblCategory item in Model)
+        {
+            <tr>
+                <th scope="row">@item.Id</th>
+                <td>@item.NameCategory</td>
+                <td>@item.Description</td>
+                <td>
+                    <a class="btn btn-success" asp-controller="Category" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-warning" asp-controller="Category" asp-action="Detail" asp-route-id="@item.Id">Detail</a>
+                    <a class="btn btn-danger" asp-controller="Category" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
+<div class="card-footer clearfix">
+    <ul class="pagination pagination-sm m-0 float-right">
+        <li class="page-item"><a class="page-link" href="#">«</a></li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">»</a></li>
+    </ul>
+</div>
 
 
 

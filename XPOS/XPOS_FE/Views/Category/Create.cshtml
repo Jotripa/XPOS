@@ -1,10 +1,15 @@
-﻿<div class="mb-3" style="width: 500px;">
-  <label for="NameCategory" class="form-label">Name Category</label>
-  <input type="email" class="form-control" id="NameCategory" placeholder="">
-</div>
-<div class="mb-3" style="width: 500px">
-  <label for="Description" class="form-label">Description</label>
-  <textarea class="form-control" id="Description" rows="3"></textarea>
-</div>
+﻿@using XPOS_API.Models
+@model TblCategory
 
-<a class="btn btn-primary">Submitt</a>
+<form asp-action="Create" method="post">
+    <div class="mb-3" style="width: 500px;">
+        <label for="NameCategory" class="form-label">Name Category</label>
+        <input type="text" class="form-control" id="NameCategory" name="NameCategory" value="@Model.NameCategory">
+    </div>
+    <div class="mb-3" style="width: 500px">
+        <label for="Description" class="form-label">Description</label>
+        <textarea class="form-control" id="Description" rows="3" name="Description">@Model.Description</textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

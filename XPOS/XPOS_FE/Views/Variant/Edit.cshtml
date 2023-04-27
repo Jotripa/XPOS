@@ -1,0 +1,20 @@
+﻿@using XPOS_API.Models
+@using XPOS_ViewModels;
+@model VMVariant;
+
+<form asp-action="Edit" method="post">
+    <div class="mb-3" style="width: 500px;">
+        <label for="IdCategory" class="form-label">Id Category</label>
+        <input type="text" class="form-control" id="IdCategory" name="IdCategory" value="@Model.IdCategory">
+    </div>
+    <div class="mb-3" style="width: 500px;">
+        <label for="NameVariant" class="form-label">Name Variant</label>
+        <input type="text" class="form-control" id="NameVariant" name="NameVariant" value="@Model.NameVariant">
+    </div>
+    <div class="mb-3" style="width: 500px">
+        <label for="Description" class="form-label">Description</label>
+        <textarea class="form-control" id="Description" rows="3" name="Description">@Model.Description</textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Edit</button>
+</form>

@@ -1,0 +1,35 @@
+﻿@using XPOS_API.Models;
+@using XPOS_ViewModels;
+@model VMVariant
+
+
+<div class="mb-3" style="width: 500px;">
+    <label for="NameCategory" class="form-label">Name Category</label>
+    <input type="text" class="form-control" id="NameCategory" value="@Model.NameCategory" readonly>
+</div>
+<div class="mb-3" style="width: 500px;">
+  <label for="NameVariant" class="form-label">Name Variant</label>
+  <input type="text" class="form-control" id="NameVariant" value="@Model.NameVariant" readonly>
+</div>
+<div class="mb-3" style="width: 500px">
+  <label for="Description" class="form-label">Name Category</label>
+  <textarea class="form-control" id="Description" rows="3" readonly>@Model.Description</textarea>
+</div>
+<div class="mb-3" style="width: 500px;">
+    <label for="CreateBy" class="form-label">Create By</label>
+    <input type="text" class="form-control" id="CreateBy" value="@Model.CreateBy" readonly>
+</div>
+<div class="mb-3" style="width: 500px;">
+    <label for="CreateDate" class="form-label">Create Date</label>
+    <input type="text" class="form-control" id="CreateDate" value="@Model.CreateDate" readonly>
+</div>
+<div class="mb-3" style="width: 500px;">
+    <label for="UpdateBy" class="form-label">Update By</label>
+    <input type="text" class="form-control" id="UpdateBy" value="@Model.UpdateBy" placeholder="" readonly>
+</div>
+<div class="mb-3" style="width: 500px;">
+    <label for="UpdateDate" class="form-label">Update Date</label>
+    <input type="text" class="form-control" id="UpdateDate" value="@Model.UpdateDate" readonly>
+</div>
+
+<a class="btn btn-primary" asp-controller="Category" asp-action="Index">Back</a>

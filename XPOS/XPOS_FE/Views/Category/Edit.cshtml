@@ -4,11 +4,11 @@
 <form asp-action="Edit" method="post">
     <div class="mb-3" style="width: 500px;">
         <label for="NameCategory" class="form-label">Name Category</label>
-        <input type="text" class="form-control" id="NameCategory" value="@Model.NameCategory">
+        <input type="text" class="form-control" id="NameCategory" name="NameCategory" value="@Model.NameCategory">
     </div>
     <div class="mb-3" style="width: 500px">
         <label for="NameCategory" class="form-label">Description</label>
-        <textarea class="form-control" id="NameCategory" rows="3">@Model.Description</textarea>
+        <textarea class="form-control" id="NameCategory" rows="3" name="Description">@Model.Description</textarea>
     </div>
 
     <button type="submit" class="btn btn-primary">Edit</button>
