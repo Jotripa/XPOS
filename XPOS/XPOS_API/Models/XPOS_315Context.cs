@@ -17,6 +17,7 @@ namespace XPOS_API.Models
         }
 
         public virtual DbSet<TblCategory> TblCategories { get; set; } = null!;
+        public virtual DbSet<TblProduct> TblProducts { get; set; } = null!;
         public virtual DbSet<TblVariant> TblVariants { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -45,6 +46,23 @@ namespace XPOS_API.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<TblProduct>(entity =>
+            {
+                entity.ToTable("TblProduct");
+
+                entity.Property(e => e.CreateDate).HasColumnType("date");
+
+                entity.Property(e => e.Image).IsUnicode(false);
+
+                entity.Property(e => e.NameProduct)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.UpdateDate).HasColumnType("date");
             });
 
             modelBuilder.Entity<TblVariant>(entity =>

@@ -5,8 +5,9 @@
 <form asp-action="Edit" method="post">
     <div class="mb-3" style="width: 500px;">
         <label for="IdCategory" class="form-label">Id Category</label>
-        <input type="text" class="form-control" id="IdCategory" name="IdCategory" value="@Model.IdCategory">
-    </div>
+        @Html.DropDownListFor(a => a.IdCategory, new SelectList(ViewBag.ListCategory, "Id", "NameCategory"), new {@class="form-control"})
+@*        <input type="text" class="form-control" id="IdCategory" name="IdCategory" value="@Model.IdCategory">
+*@    </div>
     <div class="mb-3" style="width: 500px;">
         <label for="NameVariant" class="form-label">Name Variant</label>
         <input type="text" class="form-control" id="NameVariant" name="NameVariant" value="@Model.NameVariant">
@@ -17,4 +18,5 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Edit</button>
+    <a class="btn btn-outline-dark" asp-controller="Variant" asp-action="Index">Back</a>
 </form>

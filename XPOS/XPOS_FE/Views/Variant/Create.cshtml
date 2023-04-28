@@ -2,19 +2,27 @@
 @using XPOS_ViewModels;
 @model VMVariant;
 
-<form asp-action="Create" method="post">
-    <div class="mb-3" style="width: 500px;">
-        <label for="IdCategory" class="form-label">Id Category</label>
-        <input type="text" class="form-control" id="IdCategory" name="IdCategory" value="@Model.IdCategory">
-    </div>
-    <div class="mb-3" style="width: 500px;">
-        <label for="NameCategory" class="form-label">Name Variant</label>
-        <input type="text" class="form-control" id="NameVariant" name="NameVariant" value="@Model.NameVariant">
-    </div>
-    <div class="mb-3" style="width: 500px">
-        <label for="Description" class="form-label">Description</label>
-        <textarea class="form-control" id="Description" rows="3" name="Description">@Model.Description</textarea>
-    </div>
+<div class="card">
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+    <div class="card-header">Create</div>
+    <form asp-action="Create" method="post">
+        <div class="mb-3" style="width: 500px;">
+            <label for="NameCategory" class="form-label">Name Category</label>
+            @Html.DropDownListFor(a => a.IdCategory, new SelectList(ViewBag.ListCategory, "Id","NameCategory"), "Select Category",
+            new {@class="form-control"})
+
+            @*<input type="text" class="form-control" id="IdCategory" name="IdCategory" value="@Model.IdCategory">*@
+        </div>
+        <div class="mb-3" style="width: 500px;">
+            <label for="NameCategory" class="form-label">Name Variant</label>
+            <input type="text" class="form-control" id="NameVariant" name="NameVariant" value="@Model.NameVariant">
+        </div>
+        <div class="mb-3" style="width: 500px">
+            <label for="Description" class="form-label">Description</label>
+            <textarea class="form-control" id="Description" rows="3" name="Description">@Model.Description</textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a class="btn btn-outline-dark" asp-controller="Variant" asp-action="Index">Back</a>
+    </form>
+</div>

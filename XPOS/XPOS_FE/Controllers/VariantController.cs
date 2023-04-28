@@ -10,20 +10,24 @@ namespace XPOS_FE.Controllers
     public class VariantController : Controller
     {
         private VariantService variant_service;
+        private CategoryService category_service;
         private int IdUser = 1;
 
-        public VariantController(VariantService _variantservice)
+        public VariantController(VariantService _variantservice, CategoryService _categotyservice)
         {
             this.variant_service = _variantservice;
+            this.category_service= _categotyservice;
         }
         public async Task<IActionResult> Index()
         {
             List<VMVariant> dataVariant = await variant_service.AllVariant();
             return View(dataVariant);
         }
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             VMVariant data = new VMVariant();
+            List<TblCategory> ListCategory = await category_service.AllCategory();
+            ViewBag.ListCategory = ListCategory;
             return View(data);
         }
 
@@ -36,11 +40,16 @@ namespace XPOS_FE.Controllers
             {
                 return RedirectToAction("Index");
             }
-            return View();
+
+            List<TblCategory> ListCategory = await category_service.AllCategory();
+            ViewBag.ListCategory = ListCategory;
+            return View(data);
         } 
         public async Task<IActionResult> Edit(int id)
         {
             VMVariant dataVariant = await variant_service.GetById(id);
+            List<TblCategory> ListCategory = await category_service.AllCategory();
+            ViewBag.ListCategory = ListCategory;
             return View(dataVariant);
         }
 
@@ -54,6 +63,8 @@ namespace XPOS_FE.Controllers
             {
                 return RedirectToAction("Index");
             }
+            List<TblCategory> ListCategory = await category_service.AllCategory();
+            ViewBag.ListCategory = ListCategory;
             return View(data);
         }
         public async Task<IActionResult> Detail(int id)
