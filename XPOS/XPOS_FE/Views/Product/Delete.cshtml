@@ -1,10 +1,10 @@
 ﻿@using XPOS_ViewModels;
-@model VMVariant
+@model VMProduct
 
 
 <div class="card">
+    <h2>Are you sure want to delete @Model.NameProduct ?</h2>
     <form asp-action="SureDelete">
-        <h2>Are you sure want to delete @Model.NameVariant ?</h2>
         <input type="hidden" value="@Model.Id" name="Id" />
         <button data-dismiss="modal" class="btn btn-light">Cancel</button>
         <button class="btn btn-danger">Sure</button>

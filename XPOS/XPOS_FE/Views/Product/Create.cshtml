@@ -1,0 +1,38 @@
+﻿@using XPOS_API.Models
+@using XPOS_ViewModels;
+@model VMProduct;
+
+<div class="card">
+    <form asp-action="Create" method="post">
+        <div class="mb-3">
+            <label for="NameProduct" class="form-label">Name Product</label>
+            <input type="text" class="form-control" id="NameProduct" value="@Model.NameProduct" name="NameProduct" />
+        </div>
+        <div class="mb-3">
+            <label for="IdCategory" class="form-label">Category</label>
+            @Html.DropDownListFor(a => a.IdCategory, new SelectList(ViewBag.ListCategory, "Id","NameCategory"),
+            "Select Category",
+            new {@class="form-control"})
+        </div>
+        <div class="mb-3">
+            <label for="IdVariant" class="form-label">Variant</label>
+            @Html.DropDownListFor(a => a.IdVariant, new SelectList(ViewBag.ListVariant, "Id","NameVariant"),
+            "Select Variant",
+            new {@class="form-control"})
+        </div>
+        <div class="mb-3">
+            <label for="Stock" class="form-label">Stock</label>
+            <input type="number" class="form-control" id="Stock" value="@Model.Stock" name="Stock" />
+        </div>
+        <div class="mb-3">
+            <label for="Price" class="form-label">Price</label>
+            <input type="number" class="form-control" id="Price" value="@Model.Price" name="Price" />
+        </div>
+        <div class="mb-3">
+            <label for="Image" class="form-label">Image</label>
+            <input type="file" class="form-control" id="Image" value="@Model.Image" name="Image" />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button data-dismiss="modal" class="btn btn-light">Cancel</button>
+    </form>
+</div>

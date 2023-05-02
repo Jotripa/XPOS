@@ -33,6 +33,7 @@ namespace XPOS_API.Controllers
                                NameProduct = p.NameProduct,
                                Price = p.Price,
                                Stock = p.Stock,
+                               Image = p.Image,
 
                                IdVariant = v.Id,
                                NameVariant = v.NameVariant,
@@ -53,7 +54,7 @@ namespace XPOS_API.Controllers
                            on p.IdVariant equals v.Id
                            join c in db.TblCategories
                            on v.IdCategory equals c.Id
-                           where p.Id == id && p.IsDelete!= false
+                           where p.Id == id && p.IsDelete == false
                            select new VMProduct
                            {
                                Id = p.Id,
@@ -130,7 +131,7 @@ namespace XPOS_API.Controllers
             return respons;
             
         }
-        [HttpDelete("DeleteProduct")]
+        [HttpDelete("DeleteProduct/{id}")]
         public VMRespons DeleteProduct(int id)
         {
             TblProduct data = db.TblProducts.Where(a => a.Id == id).FirstOrDefault();  
@@ -148,6 +149,11 @@ namespace XPOS_API.Controllers
                     respons.Success = false;
                     respons.Message = "Data failed Deleted" + ex.Message;
                 }
+            }
+            else
+            {
+                respons.Success = false;
+                respons.Message = "Data not found";
             }
             return respons;
         }

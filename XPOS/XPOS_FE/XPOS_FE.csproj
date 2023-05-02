@@ -11,4 +11,8 @@
     <ProjectReference Include="..\XPOS_ViewModels\XPOS_ViewModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>

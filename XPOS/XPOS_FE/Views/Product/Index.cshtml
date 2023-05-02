@@ -1,41 +1,46 @@
 ﻿@using XPOS_API.Models;
-@model List<TblCategory>
+@using XPOS_ViewModels;
+@model List<VMProduct>
 
-
-
-<h1>Category List</h1>
-@*<a class="btn btn-primary" asp-controller="Category" asp-action="Create">Create</a>*@
-<button type="button" class="btn btn-primary" id ="btn_create">
-    Create Category
+<h1>Product List</h1>
+<button type="button" class="btn btn-primary" id="btn-create">
+    Create Product
 </button>
-
-
 <table class="table">
     <thead>
         <tr>
+            <th scope="col">Image</th>
             <th scope="col">Id</th>
-            <th scope="col">Name Category</th>
-            <th scope="col">Description</th>
+            <th scope="col">Name Product</th>
+            <th scope="col">Variant</th>
+            <th scope="col">Category</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Price</th>
             <th scope="col">Action</th>
+
 
         </tr>
     </thead>
     <tbody>
-        @foreach (TblCategory item in Model)
+        @foreach (VMProduct item in Model)
         {
             <tr>
+                <td><img src="~/images/@item.Image" class="direct-chat-img"/></td>
                 <th scope="row">@item.Id</th>
+                <td>@item.NameProduct</td>
+                <td>@item.NameVariant</td>
                 <td>@item.NameCategory</td>
-                <td>@item.Description</td>
+                <td>@item.Stock</td>
+                <td>@item.Price</td>
+
                 <td>
-                    @*<a class="btn btn-success" asp-controller="Category" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                    <a class="btn btn-warning" asp-controller="Category" asp-action="Detail" asp-route-id="@item.Id">Detail</a>
-                    <a class="btn btn-danger" asp-controller="Category" asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+                    @*<a class="btn btn-success" asp-controller="Product" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-warning" asp-controller="Product" asp-action="Detail" asp-route-id="@item.Id">Detail</a>
+                    <a class="btn btn-danger" asp-controller="Product" asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
 
                     <button class="btn btn-success btnEdit" dataid="@item.Id">Edit</button>
                     <button class="btn btn-warning btnDetail" dataid="@item.Id">Detail</button>
                     <button class="btn btn-danger btnDelete" dataid="@item.Id">Delete</button>
-
                 </td>
             </tr>
         }
@@ -53,52 +58,49 @@
 
 
 <script>
-    $("#btn_create").click(function(){
+    $("#btn-create").click(function () {
 
         $("#body-modal-default").empty()
-        $("#body-modal-default").load("/Category/Create")
+        $("#body-modal-default").load("/Product/Create")
 
         $("#header-modal-default").empty()
-        $("#header-modal-default").text("Create Category")
+        $("#header-modal-default").text("Create Product")
 
         $("#modal-default").modal("show")
-        
+
     })
 
-    $(".btnEdit").click(function(){
+    $(".btnEdit").click(function () {
 
         var id = $(this).attr("dataid")
         $("#body-modal-default").empty()
-        $("#body-modal-default").load("/Category/Edit?id=" + id)
+        $("#body-modal-default").load("/Product/Edit?id=" + id)
 
         $("#header-modal-default").empty()
-        $("#header-modal-default").text("Edit Category")
-
-        $("#modal-default").modal("show")
-    })
-
-    $(".btnDetail").click(function(){
-        var id = $(this).attr("dataid")
-        $("#body-modal-default").empty()
-        $("#body-modal-default").load("/Category/Detail?id=" + id)
-
-        $("#header-modal-default").empty()
-        $("#header-modal-default").text("Detail Category")
+        $("#header-modal-default").text("Edit Product")
 
         $("#modal-default").modal("show")
     })
 
-    $(".btnDelete").click(function(){
+    $(".btnDetail").click(function () {
         var id = $(this).attr("dataid")
         $("#body-modal-default").empty()
-        $("#body-modal-default").load("/Category/Delete?id=" + id)
+        $("#body-modal-default").load("/Product/Detail?id=" + id)
 
         $("#header-modal-default").empty()
-        $("#header-modal-default").text("Delete Category")
+        $("#header-modal-default").text("Detail Product")
+
+        $("#modal-default").modal("show")
+    })
+
+    $(".btnDelete").click(function () {
+        var id = $(this).attr("dataid")
+        $("#body-modal-default").empty()
+        $("#body-modal-default").load("/Product/Delete?id=" + id)
+
+        $("#header-modal-default").empty()
+        $("#header-modal-default").text("Delete Product")
 
         $("#modal-default").modal("show")
     })
 </script>
-
-
-

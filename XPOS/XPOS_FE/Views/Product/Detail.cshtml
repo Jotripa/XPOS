@@ -1,19 +1,27 @@
 ﻿@using XPOS_API.Models;
 @using XPOS_ViewModels;
-@model VMVariant
+@model VMProduct
 
 <div class="card">
     <div class="mb-3">
-        <label for="NameCategory" class="form-label">Name Category</label>
-        <input type="text" class="form-control" id="NameCategory" value="@Model.NameCategory" readonly>
+        <label for="NameProduct" class="form-label">Name Product</label>
+        <input type="text" class="form-control" id="NameProduct" value="@Model.NameProduct" readonly>
     </div>
     <div class="mb-3">
         <label for="NameVariant" class="form-label">Name Variant</label>
         <input type="text" class="form-control" id="NameVariant" value="@Model.NameVariant" readonly>
     </div>
     <div class="mb-3">
-        <label for="Description" class="form-label">Name Category</label>
-        <textarea class="form-control" id="Description" rows="3" readonly>@Model.Description</textarea>
+        <label for="NameCategory" class="form-label">Name Category</label>
+        <textarea class="form-control" id="NameCategory" rows="3" readonly>@Model.NameCategory</textarea>
+    </div>
+    <div class="mb-3">
+        <label for="Stock" class="form-label">Stock</label>
+        <textarea class="form-control" id="Stock" rows="3" readonly>@Model.Stock</textarea>
+    </div>
+    <div class="mb-3">
+        <label for="Price" class="form-label">Price</label>
+        <textarea class="form-control" id="Price" rows="3" readonly>@Model.Price</textarea>
     </div>
     <div class="mb-3">
         <label for="CreateBy" class="form-label">Create By</label>
@@ -32,4 +40,5 @@
         <input type="text" class="form-control" id="UpdateDate" value="@Model.UpdateDate" readonly>
     </div>
 </div>
-<button data-dismiss="modal" class="btn btn-primary">Back</button>
+
+<button data-dismiss="modal" class="btn btn-light">Back</button>

@@ -1,41 +1,45 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
 using XPOS_API.Models;
 using XPOS_FE.Services;
 using XPOS_ViewModels;
 
 namespace XPOS_FE.Controllers
 {
-    public class VariantController : Controller
+    public class ProductController : Controller
     {
         private VariantService variant_service;
         private CategoryService category_service;
+        private ProductService product_service;
         private int IdUser = 1;
 
-        public VariantController(VariantService _variantservice, CategoryService _categotyservice)
+        public ProductController(VariantService _variantservice, CategoryService _categotyservice, ProductService _productservice)
         {
             this.variant_service = _variantservice;
-            this.category_service= _categotyservice;
+            this.category_service = _categotyservice;
+            this.product_service = _productservice;
         }
         public async Task<IActionResult> Index()
         {
-            List<VMVariant> dataVariant = await variant_service.AllVariant();
-            return View(dataVariant);
+            List<VMProduct> dataProduct = await product_service.AllProduct();
+            return View(dataProduct);
         }
         public async Task<IActionResult> Create()
         {
-            VMVariant data = new VMVariant();
+            VMProduct data = new VMProduct();
             List<TblCategory> ListCategory = await category_service.AllCategory();
             ViewBag.ListCategory = ListCategory;
+
+            List<VMVariant> ListVariant = await variant_service.AllVariant();
+            ViewBag.ListVariant = ListVariant;
+
             return PartialView(data);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(VMVariant data)
+        public async Task<IActionResult> Create(VMProduct data)
         {
             data.CreateBy = IdUser;
-            VMRespons respons = await variant_service.PostVariant(data);
+            VMRespons respons = await product_service.PostProduct(data);
             if (respons.Success)
             {
                 return RedirectToAction("Index");
@@ -43,43 +47,57 @@ namespace XPOS_FE.Controllers
 
             List<TblCategory> ListCategory = await category_service.AllCategory();
             ViewBag.ListCategory = ListCategory;
+
+            List<VMVariant> ListVariant = await variant_service.AllVariant();
+            ViewBag.ListVariant = ListVariant;
+
             return View(data);
-        } 
+        }
+
         public async Task<IActionResult> Edit(int id)
         {
-            VMVariant dataVariant = await variant_service.GetById(id);
+            VMProduct dataProduct = await product_service.GetById(id);
             List<TblCategory> ListCategory = await category_service.AllCategory();
             ViewBag.ListCategory = ListCategory;
-            return PartialView(dataVariant);
+
+            List<VMVariant> ListVariant = await variant_service.AllVariant();
+            ViewBag.ListVariant = ListVariant;
+
+            return PartialView(dataProduct);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(VMVariant data)
+        public async Task<IActionResult> Edit(VMProduct data)
         {
-            data.UpdateBy= IdUser;
-            VMRespons respons = await variant_service.PutVariant(data);
+            data.UpdateBy = IdUser;
+            VMRespons respons = await product_service.PutProduct(data);
 
-            if(respons.Success)
+            if (respons.Success)
             {
                 return RedirectToAction("Index");
             }
             List<TblCategory> ListCategory = await category_service.AllCategory();
             ViewBag.ListCategory = ListCategory;
+
+            List<VMVariant> ListVariant = await variant_service.AllVariant();
+            ViewBag.ListVariant = ListVariant;
             return View(data);
         }
+
         public async Task<IActionResult> Detail(int id)
         {
-            VMVariant dataVariant = await variant_service.GetById(id);
-            return PartialView(dataVariant);
+            VMProduct DataProduct = await product_service.GetById(id);
+            return PartialView(DataProduct);
         }
         public async Task<IActionResult> Delete(int id)
         {
-            VMVariant data = await variant_service.GetById(id);
-            return PartialView(data);
+            VMProduct dataProduct = await product_service.GetById(id);
+            return PartialView(dataProduct);
         }
+
         public async Task<IActionResult> SureDelete(int Id)
         {
-            VMRespons respons = await variant_service.DeleteVariant(Id);
+            VMRespons respons = await product_service.DeleteProduct(Id);
             if (respons.Success)
             {
                 return RedirectToAction("Index");

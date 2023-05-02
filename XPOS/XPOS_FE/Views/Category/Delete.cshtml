@@ -2,11 +2,12 @@
 @model TblCategory
 
 
-<h2>Are you sure want to delete @Model.NameCategory ?</h2>
 
-<form asp-action="SureDelete">
-    <input type="hidden" value="@Model.Id" name="Id" id="Id"/>
-    <a class="btn btn-outline-dark" asp-controller="Category" asp-action="Index">Back</a>
-    <button class="btn btn-danger">Sure</button>
-
-</form>
+<div class="card">
+    <form asp-action="SureDelete">
+        <h2>Are you sure want to delete @Model.NameCategory ?</h2>
+        <input type="hidden" value="@Model.Id" name="Id" />
+        <button data-dismiss="modal" class="btn btn-light">Cancel</button>
+        <button class="btn btn-danger">Sure</button>
+    </form>
+</div>

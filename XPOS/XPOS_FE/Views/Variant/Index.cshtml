@@ -3,7 +3,12 @@
 @model List<VMVariant>
 
 <h1>Variant List</h1>
-<a class="btn btn-primary" asp-controller="Variant" asp-action="Create">Create</a>
+@*<a class="btn btn-primary" asp-controller="Variant" asp-action="Create">Create</a>*@
+
+<button type="button" class="btn-primary" id="btn-create">
+    Create Variant
+</button>
+
 <table class="table">
     <thead>
         <tr>
@@ -24,9 +29,13 @@
                 <td>@item.NameVariant</td>
                 <td>@item.Description</td>
                 <td>
-                    <a class="btn btn-success" asp-controller="Variant" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    @*<a class="btn btn-success" asp-controller="Variant" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                     <a class="btn btn-warning" asp-controller="Variant" asp-action="Detail" asp-route-id="@item.Id">Detail</a>
-                    <a class="btn btn-danger" asp-controller="Variant" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a class="btn btn-danger" asp-controller="Variant" asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+
+                    <button class="btn btn-success btnEdit" dataid="@item.Id">Edit</button>
+                    <button class="btn btn-warning btnDetail" dataid="@item.Id">Detail</button>
+                    <button class="btn btn-danger btnDelete" dataid="@item.Id">Delete</button>
                 </td>
             </tr>
         }
@@ -41,3 +50,51 @@
         <li class="page-item"><a class="page-link" href="#">»</a></li>
     </ul>
 </div>
+
+<script>
+    $("#btn-create").click(function () {
+
+        $("#body-modal-default").empty()
+        $("#body-modal-default").load("/Variant/Create")
+
+        $("#header-modal-default").empty()
+        $("#header-modal-default").text("Create Variant")
+
+        $("#modal-default").modal("show")
+
+    })
+
+    $(".btnEdit").click(function () {
+
+        var id = $(this).attr("dataid")
+        $("#body-modal-default").empty()
+        $("#body-modal-default").load("/Variant/Edit?id=" + id)
+
+        $("#header-modal-default").empty()
+        $("#header-modal-default").text("Edit Variant")
+
+        $("#modal-default").modal("show")
+    })
+
+    $(".btnDetail").click(function () {
+        var id = $(this).attr("dataid")
+        $("#body-modal-default").empty()
+        $("#body-modal-default").load("/Variant/Detail?id=" + id)
+
+        $("#header-modal-default").empty()
+        $("#header-modal-default").text("Detail Variant")
+
+        $("#modal-default").modal("show")
+    })
+
+    $(".btnDelete").click(function () {
+        var id = $(this).attr("dataid")
+        $("#body-modal-default").empty()
+        $("#body-modal-default").load("/Variant/Delete?id=" + id)
+
+        $("#header-modal-default").empty()
+        $("#header-modal-default").text("Delete Variant")
+
+        $("#modal-default").modal("show")
+    })
+</script>

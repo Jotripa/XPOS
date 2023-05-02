@@ -9,6 +9,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<CategoryService>();
 //Add Variant Service to call API
 builder.Services.AddScoped<VariantService>();
+//Add Product service to call API
+builder.Services.AddScoped<ProductService>();
 
 var app = builder.Build();
 

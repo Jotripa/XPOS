@@ -1,16 +1,23 @@
 ﻿@using XPOS_API.Models
 @model TblCategory
 
-<form asp-action="Edit" method="post">
-    <div class="mb-3" style="width: 500px;">
-        <label for="NameCategory" class="form-label">Name Category</label>
-        <input type="text" class="form-control" id="NameCategory" name="NameCategory" value="@Model.NameCategory">
-    </div>
-    <div class="mb-3" style="width: 500px">
-        <label for="NameCategory" class="form-label">Description</label>
-        <textarea class="form-control" id="NameCategory" rows="3" name="Description">@Model.Description</textarea>
-    </div>
 
-    <button type="submit" class="btn btn-primary">Edit</button>
-    <a class="btn btn-outline-dark" asp-controller="Category" asp-action="Index">Back</a>
-</form>
+<div class="card">
+    <form asp-action="Edit" method="post">
+        <input type="hidden" value="@Model.Id" name="Id"/>
+
+        <div class="mb-3">
+            <label for="NameCategory" class="form-label">Name Category</label>
+            <input type="text" class="form-control" id="NameCategory" name="NameCategory" value="@Model.NameCategory">
+        </div>
+        <div class="mb-3">
+            <label for="NameCategory" class="form-label">Description</label>
+            <textarea class="form-control" id="NameCategory" rows="3" name="Description">@Model.Description</textarea>
+        </div>
+
+        <div>
+            <button type="submit" class="btn btn-primary">Edit</button>
+            <button data-dismiss="modal" class="btn btn-primary">Cancel</button>
+        </div>
+    </form>
+</div>

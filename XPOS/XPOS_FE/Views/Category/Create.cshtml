@@ -1,16 +1,21 @@
 ﻿@using XPOS_API.Models
 @model TblCategory
 
-<form asp-action="Create" method="post">
-    <div class="mb-3" style="width: 500px;">
-        <label for="NameCategory" class="form-label">Name Category</label>
-        <input type="text" class="form-control" id="NameCategory" name="NameCategory" value="@Model.NameCategory">
-    </div>
-    <div class="mb-3" style="width: 500px">
-        <label for="Description" class="form-label">Description</label>
-        <textarea class="form-control" id="Description" rows="3" name="Description">@Model.Description</textarea>
-    </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-    <a class="btn btn-outline-dark" asp-controller="Category" asp-action="Index">Back</a>
-</form>
+<div class="card">
+    <form asp-action="Create" method="post">
+        <div class="mb-3">
+            <label for="NameCategory" class="form-label">Name Category</label>
+            <input type="text" class="form-control" id="NameCategory" name="NameCategory" value="@Model.NameCategory">
+        </div>
+        <div class="mb-3" >
+            <label for="Description" class="form-label">Description</label>
+            <textarea class="form-control" id="Description" rows="3" name="Description">@Model.Description</textarea>
+        </div>
+
+        <div class="modal-footer justify-content-between">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button data-dismiss="modal" class="btn btn-light">Cancel</button>
+        </div>
+    </form>
+</div>
