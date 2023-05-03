@@ -38,12 +38,12 @@ namespace XPOS_FE.Controllers
             VMRespons respons = await variant_service.PostVariant(data);
             if (respons.Success)
             {
-                return RedirectToAction("Index");
+                return Json(new { dataRespon = respons });
             }
 
             List<TblCategory> ListCategory = await category_service.AllCategory();
             ViewBag.ListCategory = ListCategory;
-            return View(data);
+            return Json(new { dataRespon = respons });
         } 
         public async Task<IActionResult> Edit(int id)
         {
@@ -61,11 +61,11 @@ namespace XPOS_FE.Controllers
 
             if(respons.Success)
             {
-                return RedirectToAction("Index");
+                return Json(new { dataRespon = respons });
             }
             List<TblCategory> ListCategory = await category_service.AllCategory();
             ViewBag.ListCategory = ListCategory;
-            return View(data);
+            return Json(new { dataRespon = respons });
         }
         public async Task<IActionResult> Detail(int id)
         {
@@ -82,9 +82,9 @@ namespace XPOS_FE.Controllers
             VMRespons respons = await variant_service.DeleteVariant(Id);
             if (respons.Success)
             {
-                return RedirectToAction("Index");
+                return Json(new { dataRespon = respons });
             }
-            return RedirectToAction("Delete", Id);
+            return Json(new { dataRespon = respons });
         }
 
     }

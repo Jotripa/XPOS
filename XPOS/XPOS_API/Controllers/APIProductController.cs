@@ -105,11 +105,13 @@ namespace XPOS_API.Controllers
             if(dataOld != null)
             {
                 dataOld.NameProduct = data.NameProduct;
-                dataOld.IdVariant = data.IdVariant;
-                dataOld.Price = data.Price;
-                dataOld.Image = data.Image;
                 dataOld.Stock = data.Stock;
-                dataOld.UpdateBy = data.UpdateBy;
+                dataOld.Price = data.Price;
+                if(data.Image != null)
+                {
+                    dataOld.Image = data.Image;
+                }
+                dataOld.UpdateBy = 1;
                 dataOld.UpdateDate = data.UpdateDate;
                 try
                 {

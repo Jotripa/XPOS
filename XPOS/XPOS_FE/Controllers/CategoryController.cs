@@ -33,9 +33,9 @@ namespace XPOS_FE.Controllers
             VMRespons respons = await category_service.PostCategory(data);
             if (respons.Success)
             {
-                return RedirectToAction("Index");
+                return Json(new { dataRespon = respons});
             }
-            return View();
+            return Json(new { dataRespon = respons});
         }
         public async Task<IActionResult> Edit(int id)
         {
@@ -51,10 +51,10 @@ namespace XPOS_FE.Controllers
 
             if (respons.Success)
             {
-                return RedirectToAction("Index");
+                return Json(new { dataRespon = respons});
             }
 
-            return View(data);
+            return Json(new {dataRespon = respons});
         }
         public async Task<IActionResult> Detail(int id)
         {
@@ -71,9 +71,9 @@ namespace XPOS_FE.Controllers
             VMRespons respons = await category_service.DeleteCategory(Id);
             if (respons.Success)
             {
-                return RedirectToAction("Index");
+                return Json(new { dataRespon = respons });
             }
-            return RedirectToAction("Delete", Id);
+            return Json(new { dataRespon = respons });
         }
     }
 }

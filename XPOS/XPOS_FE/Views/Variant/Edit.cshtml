@@ -3,7 +3,7 @@
 @model VMVariant;
 
 <div class="card">
-    <form asp-action="Edit" method="post">
+    <form asp-action="Edit" method="post" id="form-edit">
         <input type="hidden" value="@Model.Id" name="Id" />
 
         <div class="mb-3">
@@ -26,3 +26,51 @@
 
     </form>
 </div>
+<script>
+    $("#form-edit").validate({
+        errorClass: "is-invalid text-danger",
+
+        rules: {
+            IdCategory: "required",
+            NameVariant: {
+                required: true,
+                minlength: 2
+            },
+            Description: "required"
+        },
+
+        messages: {
+            IdCategory: "Please select category",
+            NameVariant: {
+                required: "Please enter name category",
+                minlength: "Name Category must consist of at leaast 2 character"
+            },
+            Description: "Please enter description"
+        },
+
+        submitHandler: function (form) {
+            var dataForm = $(form).serialize();
+
+            debugger
+            $.ajax({
+                url: "/Variant/Edit",
+                method: "post",
+                data: dataForm,
+                dataType: "json",
+                success: function (respon) {
+                    if (respon.dataRespon.success) {
+
+                        $("#modal-default").modal("hide")
+                        toastr.success(respon.dataRespon.message)
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 2000);
+                    }
+                    else {
+                        toastr.error(respon.dataRespon.message)
+                    }
+                }
+            })
+        }
+    })
+</script>

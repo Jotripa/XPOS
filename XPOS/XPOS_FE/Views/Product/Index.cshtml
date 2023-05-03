@@ -60,37 +60,37 @@
 <script>
     $("#btn-create").click(function () {
 
-        $("#body-modal-default").empty()
-        $("#body-modal-default").load("/Product/Create")
+        $("#body-modal-xl").empty()
+        $("#body-modal-xl").load("/Product/Create")
 
-        $("#header-modal-default").empty()
-        $("#header-modal-default").text("Create Product")
+        $("#header-modal-xl").empty()
+        $("#header-modal-xl").text("Create Product")
 
-        $("#modal-default").modal("show")
+        $("#modal-xl").modal("show")
 
     })
 
     $(".btnEdit").click(function () {
 
         var id = $(this).attr("dataid")
-        $("#body-modal-default").empty()
-        $("#body-modal-default").load("/Product/Edit?id=" + id)
+        $("#body-modal-xl").empty()
+        $("#body-modal-xl").load("/Product/Edit?id=" + id)
 
-        $("#header-modal-default").empty()
-        $("#header-modal-default").text("Edit Product")
+        $("#header-modal-xl").empty()
+        $("#header-modal-xl").text("Edit Product")
 
-        $("#modal-default").modal("show")
+        $("#modal-xl").modal("show")
     })
 
     $(".btnDetail").click(function () {
         var id = $(this).attr("dataid")
-        $("#body-modal-default").empty()
-        $("#body-modal-default").load("/Product/Detail?id=" + id)
+        $("#body-modal-xl").empty()
+        $("#body-modal-xl").load("/Product/Detail?id=" + id)
 
-        $("#header-modal-default").empty()
-        $("#header-modal-default").text("Detail Product")
+        $("#header-modal-xl").empty()
+        $("#header-modal-xl").text("Detail Product")
 
-        $("#modal-default").modal("show")
+        $("#modal-xl").modal("show")
     })
 
     $(".btnDelete").click(function () {

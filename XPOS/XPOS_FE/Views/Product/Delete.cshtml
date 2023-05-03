@@ -3,10 +3,42 @@
 
 
 <div class="card">
-    <h2>Are you sure want to delete @Model.NameProduct ?</h2>
-    <form asp-action="SureDelete">
-        <input type="hidden" value="@Model.Id" name="Id" />
-        <button data-dismiss="modal" class="btn btn-light">Cancel</button>
-        <button class="btn btn-danger">Sure</button>
+    <form asp-action="SureDelete" id="form-delete">
+        <h2>Are you sure want to delete @Model.NameProduct ?</h2>
+        <input type="hidden" value="@Model.Id" name="Id" id="Id" />
+
+        <div class="modal-footer justify-content-between">
+            <button data-dismiss="modal" class="btn btn-light">Cancel</button>
+            <button class="btn btn-danger">Sure</button>
+        </div>
     </form>
 </div>
+
+<script>
+    $("#form-delete").validate({
+
+        submitHandler: function (form) {
+            var id = $("#Id").val();
+
+            debugger
+            $.ajax({
+                url: "/Product/SureDelete",
+                data: { Id: id },
+                dataType: "json",
+                success: function (respon) {
+                    if (respon.dataRespon.success) {
+
+                        $("#modal-default").modal("hide")
+                        toastr.success(respon.dataRespon.message)
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 2000);
+                    }
+                    else {
+                        toastr.error(respon.dataRespon.message)
+                    }
+                }
+            })
+        }
+    })
+</script>

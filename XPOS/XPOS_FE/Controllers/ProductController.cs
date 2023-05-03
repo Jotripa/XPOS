@@ -10,14 +10,21 @@ namespace XPOS_FE.Controllers
         private VariantService variant_service;
         private CategoryService category_service;
         private ProductService product_service;
+        private readonly IWebHostEnvironment web_host;
         private int IdUser = 1;
 
-        public ProductController(VariantService _variantservice, CategoryService _categotyservice, ProductService _productservice)
+        public ProductController(VariantService _variantservice, 
+            CategoryService _categotyservice, 
+            ProductService _productservice,
+            IWebHostEnvironment webHost)
         {
             this.variant_service = _variantservice;
             this.category_service = _categotyservice;
             this.product_service = _productservice;
+            this.web_host = webHost;
         }
+
+        #region CRUD
         public async Task<IActionResult> Index()
         {
             List<VMProduct> dataProduct = await product_service.AllProduct();
@@ -39,10 +46,11 @@ namespace XPOS_FE.Controllers
         public async Task<IActionResult> Create(VMProduct data)
         {
             data.CreateBy = IdUser;
+            data.Image = Upload(data);
             VMRespons respons = await product_service.PostProduct(data);
             if (respons.Success)
             {
-                return RedirectToAction("Index");
+                return Json(new { dataRespon = respons });
             }
 
             List<TblCategory> ListCategory = await category_service.AllCategory();
@@ -51,7 +59,7 @@ namespace XPOS_FE.Controllers
             List<VMVariant> ListVariant = await variant_service.AllVariant();
             ViewBag.ListVariant = ListVariant;
 
-            return View(data);
+            return Json(new { dataRespon = respons });
         }
 
         public async Task<IActionResult> Edit(int id)
@@ -70,18 +78,19 @@ namespace XPOS_FE.Controllers
         public async Task<IActionResult> Edit(VMProduct data)
         {
             data.UpdateBy = IdUser;
+            data.Image = Upload(data);
             VMRespons respons = await product_service.PutProduct(data);
 
             if (respons.Success)
             {
-                return RedirectToAction("Index");
+                return Json(new { dataRespon = respons });
             }
             List<TblCategory> ListCategory = await category_service.AllCategory();
             ViewBag.ListCategory = ListCategory;
 
             List<VMVariant> ListVariant = await variant_service.AllVariant();
             ViewBag.ListVariant = ListVariant;
-            return View(data);
+            return Json(new { dataRespon = respons });
         }
 
         public async Task<IActionResult> Detail(int id)
@@ -100,10 +109,34 @@ namespace XPOS_FE.Controllers
             VMRespons respons = await product_service.DeleteProduct(Id);
             if (respons.Success)
             {
-                return RedirectToAction("Index");
+                return Json(new { dataRespon = respons });
             }
-            return RedirectToAction("Delete", Id);
+            return Json(new { dataRespon = respons });
         }
+        #endregion
+
+        #region addons function
+
+        public string Upload(VMProduct data)
+        {
+            string fileName = "";
+
+            if(data.ImageFile != null)
+            {
+                string uploadFolder = Path.Combine(web_host.WebRootPath, "images");
+                fileName = data.ImageFile.FileName;
+                string filePath = Path.Combine(uploadFolder, fileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    data.ImageFile.CopyTo(fileStream);
+                }
+            }
+
+            return fileName;
+        }
+
+        #endregion
 
     }
 }
