@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using XPOS_API.Models;
 using XPOS_FE.Services;
 using XPOS_ViewModels;
@@ -25,10 +26,45 @@ namespace XPOS_FE.Controllers
         }
 
         #region CRUD
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(VMSearchPage pg)
         {
+            ViewBag.NameSort = String.IsNullOrEmpty(pg.sortOrder) ? "name_desc" : "";
+            ViewBag.PriceSort = pg.sortOrder == "price" ? "price_desc" : "price";
+            ViewBag.CurrentSort = pg.sortOrder;
+            ViewBag.pageSize = pg.pageSize;
+            if(pg.searchString != null)
+            {
+                pg.pageNumber = 1;
+            }
+            else
+            {
+                pg.searchString = pg.CurrentFilter;
+            }
+            ViewBag.CurrentFilter = pg.searchString;
+
             List<VMProduct> dataProduct = await product_service.AllProduct();
-            return View(dataProduct);
+            if (!String.IsNullOrEmpty(pg.searchString))
+            {
+                dataProduct = dataProduct.Where(a => a.NameProduct.ToLower().Contains(pg.searchString.ToLower())).ToList();
+            }
+
+            switch (pg.sortOrder)
+            {
+                case "name_desc":
+                    dataProduct = dataProduct.OrderByDescending(a => a.NameProduct).ToList();
+                    break;
+                case "price_desc":
+                    dataProduct = dataProduct.OrderByDescending(a => a.Price).ToList();
+                    break;
+                case "price":
+                    dataProduct = dataProduct.OrderBy(a => a.Price).ToList();
+                    break;
+                default:
+                    dataProduct = dataProduct.OrderBy(a => a.NameProduct).ToList();
+                    break;
+            }
+            //int pageSize = 3;
+            return View(await PaginatedList<VMProduct>.CreateAsync(dataProduct, pg.pageNumber ?? 1, pg.pageSize?? 3));
         }
         public async Task<IActionResult> Create()
         {
@@ -134,6 +170,12 @@ namespace XPOS_FE.Controllers
             }
 
             return fileName;
+        }
+
+        public async Task<JsonResult> GetVariantByCategory(int idcategory)
+        {
+            List<VMVariant> ListVariant = await variant_service.GetVariantByCategory(idcategory);
+            return Json(ListVariant);
         }
 
         #endregion

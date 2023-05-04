@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using XPOS_API.Models;
 using XPOS_FE.Services;
 using XPOS_ViewModels;
@@ -14,10 +15,39 @@ namespace XPOS_FE.Controllers
         {
             this.category_service = _categoryservice;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(VMSearchPage pg)
         {
+
+            ViewBag.NameSort = String.IsNullOrEmpty(pg.sortOrder) ? "nameCategory_desc" : "";
+            ViewBag.CurrentSort = pg.sortOrder;
+            ViewBag.pageSize = pg.pageSize;
+            if(pg.searchString != null)
+            {
+                pg.pageNumber = 1;
+            }
+            else
+            {
+                pg.searchString = pg.CurrentFilter;
+            }
+            ViewBag.CurrentFilter = pg.searchString;
+
             List<TblCategory> dataCategory = await category_service.AllCategory();
-            return View(dataCategory);
+            if (!String.IsNullOrEmpty(pg.searchString))
+            {
+                dataCategory = dataCategory.Where(a => a.NameCategory.ToLower().Contains(pg.searchString.ToLower())).ToList();
+            }
+
+            switch (pg.sortOrder)
+            {
+                case "nameCategory_desc":
+                    dataCategory = dataCategory.OrderByDescending(a => a.NameCategory).ToList();
+                    break;
+                default:
+                    dataCategory = dataCategory.OrderBy(a => a.NameCategory).ToList();
+                    break;
+            }
+            //int pageSize = 3;
+            return View(await PaginatedList<TblCategory>.CreateAsync(dataCategory, pg.pageNumber ?? 1, pg.pageSize ?? 3));
         }
 
         public IActionResult Create()

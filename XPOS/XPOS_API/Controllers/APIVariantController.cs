@@ -39,27 +39,15 @@ namespace XPOS_API.Controllers
             return dataVariant;
         }
         [HttpGet("GetVariantByCategory/{idcategory}")]
-        public List<VMVariant> GetDataByCategory(int idcategory)
+        public List<VMVariant> GetDataByCategoryId(int idcategory)
         {
             List<VMVariant> dataList = (from v in db.TblVariants
-                                        join c in db.TblCategories
-                                        on v.IdCategory equals c.Id
-                                        where v.IdCategory == idcategory && v.IsDelete ==false
+                                        where v.IdCategory == idcategory 
+                                        && v.IsDelete == false
                                         select new VMVariant
                                         {
                                             Id = v.Id,
-                                            NameVariant = v.NameVariant,
-                                            Description = v.Description,
-
-                                            IsDelete = v.IsDelete,
-                                            CreateBy = v.CreateBy,
-                                            CreateDate = v.CreateDate,
-
-                                            UpdateBy = v.UpdateBy,
-                                            UpdateDate = v.UpdateDate,
-
-                                            IdCategory = v.IdCategory,
-                                            NameCategory = c.NameCategory
+                                            NameVariant = v.NameVariant
                                         }).ToList();
             return dataList;
         }

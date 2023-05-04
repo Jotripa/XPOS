@@ -18,10 +18,37 @@ namespace XPOS_FE.Controllers
             this.variant_service = _variantservice;
             this.category_service= _categotyservice;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(VMSearchPage pg)
         {
+            ViewBag.NameSort = String.IsNullOrEmpty(pg.sortOrder) ? "nameVariant_desc" : "";
+            ViewBag.CurrentSort = pg.sortOrder;
+            ViewBag.pageSize = pg.pageSize;
+            if (pg.searchString != null)
+            {
+                pg.pageNumber = 1;
+            }
+            else
+            {
+                pg.searchString = pg.CurrentFilter;
+            }
+            ViewBag.CurrentFilter = pg.searchString;
+
             List<VMVariant> dataVariant = await variant_service.AllVariant();
-            return View(dataVariant);
+            if (!String.IsNullOrEmpty(pg.searchString))
+            {
+                dataVariant = dataVariant.Where(a => a.NameVariant.ToLower().Contains(pg.searchString.ToLower())).ToList();
+            }
+            switch (pg.sortOrder)
+            {
+                case "nameVariant_desc":
+                    dataVariant = dataVariant.OrderByDescending(a => a.NameVariant).ToList();
+                    break;
+                default:
+                    dataVariant = dataVariant.OrderBy(a => a.NameVariant).ToList();
+                    break;
+            }
+            //int pageSize = 3;
+            return View(await PaginatedList<VMVariant>.CreateAsync(dataVariant, pg.pageNumber ?? 1, pg.pageSize?? 3));
         }
         public async Task<IActionResult> Create()
         {

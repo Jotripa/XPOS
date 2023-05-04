@@ -1,57 +1,123 @@
 ﻿@using XPOS_API.Models;
 @using XPOS_ViewModels;
-@model List<VMVariant>
+@model PaginatedList<VMVariant>
 
-<h1>Variant List</h1>
+
 @*<a class="btn btn-primary" asp-controller="Variant" asp-action="Create">Create</a>*@
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">
+            <h1>Variant List</h1>
+            <button type="button" class="btn-primary" id="btn-create">
+                Create Variant
+            </button>
+        </div>
+        <div class="card-tools">
+            <form asp-action="Index" asp-route-pageSize="@ViewBag.pageSize">
+                <div class="input-group input-group-sm" style="width: 150px;">
+                    <input type="text" name="searchString"
+                           value="@ViewBag.CurrentFilter"
+                           class="form-control float-right"
+                           placeholder="Search">
 
-<button type="button" class="btn-primary" id="btn-create">
-    Create Variant
-</button>
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-default">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button type="button" class="btn btn-default">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Name Category</th>
+                    <th scope="col">
+                        <a asp-action="Index"
+                           asp-route-sortOrder="@ViewBag.NameSort"
+                           asp-route-CurrentFilter="@ViewBag.CurrentFilter">Name Variant</a>
+                    </th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Action</th>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Name Category</th>
-            <th scope="col">Name Variant</th>
-            <th scope="col">Description</th>
-            <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (VMVariant item in Model)
+                {
+                    <tr>
+                        <th scope="row">@item.Id</th>
+                        <td>@item.NameCategory</td>
+                        <td>@item.NameVariant</td>
+                        <td>@item.Description</td>
+                        <td>
+                            @*<a class="btn btn-success" asp-controller="Variant" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a class="btn btn-warning" asp-controller="Variant" asp-action="Detail" asp-route-id="@item.Id">Detail</a>
+                        <a class="btn btn-danger" asp-controller="Variant" asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
 
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (VMVariant item in Model)
-        {
-            <tr>
-                <th scope="row">@item.Id</th>
-                <td>@item.NameCategory</td>
-                <td>@item.NameVariant</td>
-                <td>@item.Description</td>
-                <td>
-                    @*<a class="btn btn-success" asp-controller="Variant" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                    <a class="btn btn-warning" asp-controller="Variant" asp-action="Detail" asp-route-id="@item.Id">Detail</a>
-                    <a class="btn btn-danger" asp-controller="Variant" asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
-
-                    <button class="btn btn-success btnEdit" dataid="@item.Id">Edit</button>
-                    <button class="btn btn-warning btnDetail" dataid="@item.Id">Detail</button>
-                    <button class="btn btn-danger btnDelete" dataid="@item.Id">Delete</button>
-                </td>
-            </tr>
+                            <button class="btn btn-success btnEdit" dataid="@item.Id">Edit</button>
+                            <button class="btn btn-warning btnDetail" dataid="@item.Id">Detail</button>
+                            <button class="btn btn-danger btnDelete" dataid="@item.Id">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer clearfix">
+        @{
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
         }
-    </tbody>
-</table>
-<div class="card-footer clearfix">
-    <ul class="pagination pagination-sm m-0 float-right">
-        <li class="page-item"><a class="page-link" href="#">«</a></li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">»</a></li>
-    </ul>
-</div>
+        <div class="row">
+            <div class="col-2">
+                <form asp-action="Index"
+                      asp-route-CurrentFilter="@ViewBag.CurrentFilter"
+                      id="form-pageSize">
+                    <select id="pageSize" class="form-control" name="pageSize">
+                        <option value="3">3</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
 
+                    </select>
+                </form>
+            </div>
+
+            <div class="col-10">
+                <div class="float-right">
+                    Page @Model.PageIndex of @Model.TotalPages
+                    <a asp-action="Index"
+                       asp-route-sortOrder="@ViewBag.CurrentSort"
+                       asp-route-pageNumber="@(Model.PageIndex - 1)"
+                       asp-route-CurrentFilter="@ViewBag.CurrentFilter"
+                       asp-route-pageSize="@ViewBag.pageSize"
+                       class="btn btn-default @prevDisabled">
+                        Previous
+                    </a>
+                    <a asp-action="Index"
+                       asp-route-sortOrder="@ViewBag.CurrentSort"
+                       asp-route-pageNumber="@(Model.PageIndex + 1)"
+                       asp-route-CurrentFilter="@ViewBag.CurrentFilter"
+                       asp-route-pageSize="@ViewBag.pageSize"
+                       class="btn btn-default @nextDisabled">
+                        Next
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
+    $("#pageSize").val(@ViewBag.pageSize)
+    $("#pageSize").change(function () {
+        $("#form-pageSize").submit();
+    })
     $("#btn-create").click(function () {
 
         $("#body-modal-default").empty()

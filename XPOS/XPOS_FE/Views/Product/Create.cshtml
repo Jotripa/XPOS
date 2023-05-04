@@ -43,6 +43,24 @@
     </form>
 </div>
 <script>
+    $("#IdCategory").change(function () {
+        var idcategory = $(this).val()
+
+        $.ajax({
+            url: "/Product/GetVariantByCategory",
+            data: { idcategory: idcategory },
+            dataType: "json",
+            success: function (respon) {
+                debugger
+
+                $("#IdVariant").empty()
+                $("#IdVariant").append("<option>Select Variant</option>")
+                $.each(respon, function (index, item) {
+                    $("#IdVariant").append(`<option value="${item.id}">${item.nameVariant}</option>`)
+                })
+            }
+        })
+    })
     $("#form-create").validate({
         errorClass: "is-invalid text-danger",
 
