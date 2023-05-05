@@ -13,5 +13,7 @@ namespace XPOS_ViewModels
        public string CurrentFilter { get; set; }
        public int? pageNumber { get; set; }
        public int? pageSize { get; set; }
+       public decimal? minPrice { get; set; }
+       public decimal? maxPrice { get; set;}
     }
 }

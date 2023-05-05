@@ -1,0 +1,28 @@
+﻿<form asp-action="index">
+    <div class="form-group">
+        <label for="NameProduct" class="form-label">Product Name</label>
+        <input type="text" name="searchString" value="@ViewBag.CurrentFilter" class="form-control float-right" placeholder="Search">
+    </div>
+
+
+    <div class="row">
+        <div class="col-6">
+
+            <div class="form-group">
+                <label for="minPrice" class="form-label">Min Price</label>
+                <input type="number" name="minPrice" value="@ViewBag.searchMinPrice" class="form-control float-right" id="minPrice" placeholder="minPrice">
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class="form-group">
+                <label for="maxPrice" class="form-label">Max Price</label>
+                <input type="number" name="maxPrice" value="@ViewBag.searchMaxPrice" class="form-control float-right" id="maxPrice" placeholder="maxPrice">
+            </div>
+        </div>
+    </div>
+    <div class="card-footer clearfix">
+        <button data-dismiss="modal" class="btn btn-light">Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>

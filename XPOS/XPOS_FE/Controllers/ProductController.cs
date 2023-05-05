@@ -32,6 +32,9 @@ namespace XPOS_FE.Controllers
             ViewBag.PriceSort = pg.sortOrder == "price" ? "price_desc" : "price";
             ViewBag.CurrentSort = pg.sortOrder;
             ViewBag.pageSize = pg.pageSize;
+            ViewBag.searchMinPrice = pg.minPrice;
+            ViewBag.searchMaxPrice = pg.maxPrice;
+
             if(pg.searchString != null)
             {
                 pg.pageNumber = 1;
@@ -46,6 +49,14 @@ namespace XPOS_FE.Controllers
             if (!String.IsNullOrEmpty(pg.searchString))
             {
                 dataProduct = dataProduct.Where(a => a.NameProduct.ToLower().Contains(pg.searchString.ToLower())).ToList();
+            }
+
+            if(pg.minPrice != null || pg.maxPrice != null)
+            {
+                pg.minPrice = pg.minPrice == null ? decimal.MinValue : pg.minPrice;
+                pg.maxPrice = pg.maxPrice == null ? decimal.MaxValue : pg.maxPrice;
+
+                dataProduct = dataProduct.Where(a => a.Price >= pg.minPrice && a.Price <= pg.maxPrice).ToList();
             }
 
             switch (pg.sortOrder)
@@ -176,6 +187,10 @@ namespace XPOS_FE.Controllers
         {
             List<VMVariant> ListVariant = await variant_service.GetVariantByCategory(idcategory);
             return Json(ListVariant);
+        }
+        public async Task<IActionResult> searchPage()
+        {
+            return PartialView();
         }
 
         #endregion

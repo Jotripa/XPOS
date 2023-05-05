@@ -24,7 +24,7 @@
                         <button type="submit" class="btn btn-default">
                             <i class="fas fa-search"></i>
                         </button>
-                        <button type="button" class="btn btn-default">
+                        <button type="button" class="btn btn-default" name="search" id="search">
                             <i class="fas fa-plus"></i>
                         </button>
                     </div>
@@ -42,7 +42,9 @@
                     <th scope="col">
                         <a asp-action="Index"
                            asp-route-sortOrder="@ViewBag.NameSort"
-                           asp-route-CurrentFilter="@ViewBag.CurrentFilter">Name Product</a>
+                           asp-route-CurrentFilter="@ViewBag.CurrentFilter"
+                           asp-route-minPrice="@ViewBag.searchMinPrice"
+                           asp-route-maxPrice="@ViewBag.searchMaxPrice">Name Product</a>
 
                     </th>
                     <th scope="col">Variant</th>
@@ -51,7 +53,10 @@
                     <th scope="col">
                         <a asp-action="Index"
                            asp-route-sortOrder="@ViewBag.PriceSort"
-                           asp-route-CurrentFilter="@ViewBag.CurrentFilter">Price</a>
+                           asp-route-CurrentFilter="@ViewBag.CurrentFilter"
+                           asp-route-minPrice="@ViewBag.searchMinPrice"
+                           asp-route-maxPrice="@ViewBag.searchMaxPrice">Price</a>
+
                     </th>
                     <th scope="col">Action</th>
 
@@ -113,6 +118,8 @@
                        asp-route-pageNumber="@(Model.PageIndex - 1)"
                        asp-route-CurrentFilter="@ViewBag.CurrentFilter"
                        asp-route-pageSize="@ViewBag.pageSize"
+                       asp-route-searchMinPrice="@ViewBag.searchMinPrice"
+                       asp-route-searchMaxPrice="@ViewBag.searchMaxPrice"
                        class="btn btn-default @prevDisabled">
                         Previous
                     </a>
@@ -121,6 +128,8 @@
                        asp-route-pageNumber="@(Model.PageIndex + 1)"
                        asp-route-CurrentFilter="@ViewBag.CurrentFilter"
                        asp-route-pageSize="@ViewBag.pageSize"
+                       asp-route-searchMinPrice="@ViewBag.searchMinPrice"
+                       asp-route-searchMaxPrice="@ViewBag.searchMaxPrice"
                        class="btn btn-default @nextDisabled">
                         Next
                     </a>
@@ -146,6 +155,13 @@
 
         $("#modal-xl").modal("show")
 
+    })
+    $("#search").click(function(){
+        $("#header-modal-default").empty()
+        $("#header-modal-default").text("Search")
+        $("#body-modal-default").empty()
+        $("#body-modal-default").load("/Product/searchPage")
+        $("#modal-default").modal("show")
     })
 
     $(".btnEdit").click(function () {

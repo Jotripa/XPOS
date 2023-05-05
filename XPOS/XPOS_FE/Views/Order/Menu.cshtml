@@ -1,0 +1,142 @@
+﻿@using XPOS_ViewModels;
+@model List<VMProduct>
+
+<div class="card">
+    <div class="card-header">
+        <div class="row ">
+            <div class="col-lg-4 col-4">
+
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3 id="total-product">0</h3>
+                        <p>Total Product</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-4">
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3 id="total-estimate">0</h3>
+                        <p>Total Price</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-4">
+
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3>-</h3>
+                        <p>CHeckout</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="card-body">
+        <div class="row">
+            @foreach (VMProduct item in Model)
+            {
+
+                <div class="col-3">
+                    <div class="card card-primary card-outline">
+                        <div class="card-body box-profile">
+                            <div class="text-center">
+                                <img src="~/images/@item.Image" class="profile-user-img img-fluid img-circle img-responsive" />
+                            </div>
+                            <h3 class="profile-username text-center">@item.NameProduct</h3>
+                            <p class="text-muted text-center">@item.NameCategory - @item.NameVariant</p>
+                            <ul class="list-group list-group-unbordered mb-3">
+                                <li class="list-group-item">
+                                    <b>Price</b> <a class="float-right" id="price-@item.Id">@item.Price</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Stock</b> <a class="float-right" id="stock-@item.Id">@item.Stock</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <span></span>
+                                </li>
+                            </ul>
+                            <div class="row">
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-danger float-left btn-min" dataid="@item.Id" name="min">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                                <div class="text-center col-4">
+                                    <span id="total-item-@item.Id">0</span>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-primary float-right btn-plus" dataid="@item.Id" name="plus" id="">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
+    <div class="modal-footer justify-content-between">
+    </div>
+</div>
+<script>
+    var totalProduct = parseInt($("#total-product").text())
+    var totalEstimate = parseInt($("#total-estimate").text())
+
+    $(".btn-plus").click(function () {
+        var id = $(this).attr("dataid")
+        var totalItem = parseInt($("#total-item-" + id).text())
+        var totalStock = parseInt($("#stock-" + id).text())
+
+        if (totalStock > 0) {
+            totalEstimate += parseInt($("#price-" + id).text())
+            totalStock--
+            totalItem++
+            totalProduct++;
+
+            $("#total-product").text(totalProduct)
+            $("#total-estimate").text(totalEstimate)
+            $("#total-item-" + id).text(totalItem)
+            $("#stock-" + id).text(totalStock)
+            if (totalStock == 0) {
+                $("#stock-" + id).text("Out of stock")
+            }
+        }
+
+    })
+    $(".btn-min").click(function () {
+        if ($("#stock-" + id).text() == "Out of stock") {
+            $("#stock-" + id).text(1)
+        }
+        var id = $(this).attr("dataid")
+        var totalItem = parseInt($("#total-item-" + id).text())
+        var totalStock = parseInt($("#stock-" + id).text())
+        if (totalItem > 0) {
+
+            totalStock++
+            totalItem--
+            totalProduct--;
+            totalEstimate -= parseInt($("#price-" + id).text())
+
+            $("#total-product").text(totalProduct)
+            $("#total-estimate").text(totalEstimate)
+            $("#total-item-" + id).text(totalItem)
+            $("#stock-" + id).text(totalStock)
+        }
+
+    })
+</script>
