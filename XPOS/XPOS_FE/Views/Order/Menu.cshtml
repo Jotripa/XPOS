@@ -28,11 +28,10 @@
                 </div>
             </div>
             <div class="col-lg-4 col-4">
-
                 <div class="small-box bg-warning">
                     <div class="inner">
-                        <h3>-</h3>
-                        <p>CHeckout</p>
+                        <h3 id="checkout">Checkout</h3>
+                        <p>Checkout details</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-person-add"></i>
@@ -54,7 +53,7 @@
                             <div class="text-center">
                                 <img src="~/images/@item.Image" class="profile-user-img img-fluid img-circle img-responsive" />
                             </div>
-                            <h3 class="profile-username text-center">@item.NameProduct</h3>
+                            <h3 class="profile-username text-center" id="name_@item.Id">@item.NameProduct</h3>
                             <p class="text-muted text-center">@item.NameCategory - @item.NameVariant</p>
                             <ul class="list-group list-group-unbordered mb-3">
                                 <li class="list-group-item">
@@ -62,9 +61,6 @@
                                 </li>
                                 <li class="list-group-item">
                                     <b>Stock</b> <a class="float-right" id="stock-@item.Id">@item.Stock</a>
-                                </li>
-                                <li class="list-group-item">
-                                    <span></span>
                                 </li>
                             </ul>
                             <div class="row">
@@ -94,15 +90,73 @@
     </div>
 </div>
 <script>
+    var obj = {}
+    var ListDetail = []
+    var dataHeader = {}
+
     var totalProduct = parseInt($("#total-product").text())
     var totalEstimate = parseInt($("#total-estimate").text())
 
+
+
+    $("#checkout").click(function () {
+
+        dataHeader = {
+            Amount: totalEstimate,
+            TotalQty: totalProduct,
+            ListDetail: ListDetail
+        }
+        console.log(dataHeader)
+        $("#header-modal-xl").empty()
+        $("#header-modal-xl").html("<h3>Checkout Preview</h3>")
+
+        $("#body-modal-xl").empty()
+        if (ListDetail.length <= 0) {
+            $("#body-modal-xl").text("please select the product")
+        }
+        else{
+            debugger
+            $("#body-modal-xl").load("/Order/Checkout", dataHeader)
+        }
+
+        $("#modal-xl").modal("show")
+    })
+
+    function addList(id, obj) {
+        const index = ListDetail.map(a => a.IdProduct).indexOf(id)
+
+        if (index == -1) {
+            ListDetail.push(obj)
+        }
+        else {
+            ListDetail[index].Qty = obj.Qty
+            ListDetail[index].SubTotal = obj.SubTotal
+        }
+    }
+    function removeList(id, obj) {
+        const index = ListDetail.map(a => a.IdProduct).indexOf(id)
+
+        if (index != -1) {
+            ListDetail[index].Qty = obj.Qty
+            ListDetail[index].SubTotal = obj.SubTotal
+
+            if (obj.Qty == 0) {
+                ListDetail.splice(index, 1)
+            }
+
+        }
+    }
+
     $(".btn-plus").click(function () {
+        obj = {}
         var id = $(this).attr("dataid")
         var totalItem = parseInt($("#total-item-" + id).text())
         var totalStock = parseInt($("#stock-" + id).text())
+        var price = parseInt($("#price-" + id).text())
+        var name = $("#name_" + id).text()
 
         if (totalStock > 0) {
+
             totalEstimate += parseInt($("#price-" + id).text())
             totalStock--
             totalItem++
@@ -112,19 +166,30 @@
             $("#total-estimate").text(totalEstimate)
             $("#total-item-" + id).text(totalItem)
             $("#stock-" + id).text(totalStock)
-            if (totalStock == 0) {
-                $("#stock-" + id).text("Out of stock")
-            }
+
+            obj.IdProduct = id
+            obj.Qty = totalItem
+            obj.Price = price
+            obj.SubTotal = price * totalItem
+            obj.NameProduct = name
+
+            addList(id, obj)
+            console.log(ListDetail)
         }
+
 
     })
     $(".btn-min").click(function () {
+        obj = {}
         if ($("#stock-" + id).text() == "Out of stock") {
             $("#stock-" + id).text(1)
         }
         var id = $(this).attr("dataid")
         var totalItem = parseInt($("#total-item-" + id).text())
         var totalStock = parseInt($("#stock-" + id).text())
+        var price = parseInt($("#price-" + id).text())
+        var name = $("#name_" + id).text()
+
         if (totalItem > 0) {
 
             totalStock++
@@ -137,6 +202,16 @@
             $("#total-item-" + id).text(totalItem)
             $("#stock-" + id).text(totalStock)
         }
+        obj.IdProduct = id
+        obj.Qty = totalItem
+        obj.Price = price
+        obj.SubTotal = price * totalItem
+        obj.NameProduct = name
+
+        removeList(id, obj)
+
+        console.log(ListDetail)
 
     })
+
 </script>

@@ -107,7 +107,7 @@ namespace XPOS_API.Controllers
                 dataOld.NameProduct = data.NameProduct;
                 dataOld.Stock = data.Stock;
                 dataOld.Price = data.Price;
-                if(data.Image != null)
+                if(data.Image != "")
                 {
                     dataOld.Image = data.Image;
                 }

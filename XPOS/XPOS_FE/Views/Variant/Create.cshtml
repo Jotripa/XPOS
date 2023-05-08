@@ -59,7 +59,6 @@
                 dataType: "json",
                 success: function (respon) {
                     if (respon.dataRespon.success) {
-
                         $("#modal-default").modal("hide")
                         toastr.success(respon.dataRespon.message)
                         setTimeout(function () {

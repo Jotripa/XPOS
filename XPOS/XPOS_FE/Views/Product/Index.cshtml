@@ -159,8 +159,10 @@
     $("#search").click(function(){
         $("#header-modal-default").empty()
         $("#header-modal-default").text("Search")
+
         $("#body-modal-default").empty()
         $("#body-modal-default").load("/Product/searchPage")
+
         $("#modal-default").modal("show")
     })
 

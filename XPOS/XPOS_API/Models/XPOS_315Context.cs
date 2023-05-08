@@ -17,6 +17,8 @@ namespace XPOS_API.Models
         }
 
         public virtual DbSet<TblCategory> TblCategories { get; set; } = null!;
+        public virtual DbSet<TblOrderDetail> TblOrderDetails { get; set; } = null!;
+        public virtual DbSet<TblOrderHeader> TblOrderHeaders { get; set; } = null!;
         public virtual DbSet<TblProduct> TblProducts { get; set; } = null!;
         public virtual DbSet<TblVariant> TblVariants { get; set; } = null!;
 
@@ -46,6 +48,30 @@ namespace XPOS_API.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<TblOrderDetail>(entity =>
+            {
+                entity.ToTable("TblOrderDetail");
+
+                entity.Property(e => e.CreateDate).HasColumnType("date");
+
+                entity.Property(e => e.SubTotal).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.UpdateDate).HasColumnType("date");
+            });
+
+            modelBuilder.Entity<TblOrderHeader>(entity =>
+            {
+                entity.ToTable("TblOrderHeader");
+
+                entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.CodeTransaction).HasMaxLength(20);
+
+                entity.Property(e => e.CreateDate).HasColumnType("date");
+
+                entity.Property(e => e.UpdateDate).HasColumnType("date");
             });
 
             modelBuilder.Entity<TblProduct>(entity =>
