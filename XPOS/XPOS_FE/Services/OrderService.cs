@@ -40,7 +40,7 @@ namespace XPOS_FE.Services
             List<VMOrderHeader> ListOrder = new List<VMOrderHeader>();
             string apiRespons = await client.GetStringAsync(RouteAPI + "APIOrder/GetAllOrder");
 
-            ListOrder = JsonConvert.DeserializeObject<List<VMOrderHeader>>(apiRespons)
+            ListOrder = JsonConvert.DeserializeObject<List<VMOrderHeader>>(apiRespons);
             return ListOrder;
         }
     }
