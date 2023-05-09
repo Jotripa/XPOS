@@ -1,0 +1,51 @@
+﻿
+<form asp-action="OrderHistory">
+    <div class="form-group">
+        <label for="CodeTransaction" class="form-label">Code Transaction</label>
+        <input type="text" name="searchString" value="@ViewBag.CurrentFilter" class="form-control float-right" placeholder="Search">
+    </div>
+
+
+    <div class="row">
+        <div class="col-6">
+
+            <div class="form-group">
+                <label for="minPrice" class="form-label">Min Price</label>
+                <input type="number" name="minPrice" value="@ViewBag.searchMinPrice" class="form-control float-right" id="minPrice" placeholder="minPrice">
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class="form-group">
+                <label for="maxPrice" class="form-label">Max Price</label>
+                <input type="number" name="maxPrice" value="@ViewBag.searchMaxPrice" class="form-control float-right" id="maxPrice" placeholder="maxPrice">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <label for="startDate" class="form-label">Start Date</label>
+            <input type="date" name="startDate" value="@ViewBag.searchStartDate" class="form-control float-right" id="startDate" placeholder="startDate" />
+        </div>
+
+        <div class="col-6">
+            <label for="endDate" class="form-label">End Date</label>
+            <input type="date" name="endDate" value="@ViewBag.searchEndDate" class="form-control float-right" id="endDate" placeholder="endDate" />
+        </div>
+    </div>
+    <div class="card-footer clearfix">
+        <button data-dismiss="modal" class="btn btn-light">Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+<script>
+    $("#startDate").change(function(){
+        var min = $(this).val()
+        $("#endDate").attr({"min" : min})
+    })
+
+    $("#endDate").change(function(){
+        var max = $(this).val()
+        $("#startDate").attr({"max" : max})
+    })
+</script>

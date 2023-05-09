@@ -1,18 +1,195 @@
 ﻿@using XPOS_ViewModels
-@model List<VMOrderHeader>
+@model PaginatedList<VMOrderHeader>
 
 <div class="card">
     <div class="card-header">
-        <div class="card-title">History Order</div>
-    </div>
-    <div class="card-body">
-        <table>
-            <thead>
+        <div class="card-title">
+            History Order
+        </div>
+        <div class="card-tools">
+            <div class="input-group-append">
+                <button type="button" class="btn btn-default" name="search" id="search">
+                    <i class="fas fa-search"> </i>
+                </button>
+            </div>
+        </div>
 
+    </div>
+    <div class="card-body p-0">
+        <div class="card-body">
+            Search Result :
+            @if (@ViewBag.CurrentFilter != null)
+            {
+                <span class="bg-red">Code Transaction: @ViewBag.CurrentFilter</span>
+
+            }
+            @if (@ViewBag.searchStartDate != null)
+            {
+                <span class="bg-red">Min Date: @ViewBag.searchStartDate</span>
+
+            }
+            @if (@ViewBag.searchEndDate != null)
+            {
+                <span class="bg-red">Max Date: @ViewBag.searchEndDate</span>
+
+            }
+            @if (@ViewBag.searchMinPrice != null)
+            {
+                <span class="bg-red">Min Price: @ViewBag.searchMinPrice</span>
+
+            }
+            @if (@ViewBag.searchMaxPrice != null)
+            {
+                <span class="bg-red">Max Price: @ViewBag.searchMaxPrice</span>
+
+            }
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        <a asp-action="OrderHistory"
+                           asp-route-sortOrder="@ViewBag.NameSort"
+                           asp-route-CurrentFilter="@ViewBag.CurrentFilter"
+                           asp-route-minPrice="@ViewBag.searchMinPrice"
+                           asp-route-maxPrice="@ViewBag.searchMaxPrice"
+                           asp-route-startDate="@ViewBag.searchStartDate"
+                           asp-route-endDate="@ViewBag.searchEndDate"
+                           asp-route-pageSize="@ViewBag.pageSize">Order Date</a>
+                    </th>
+                    <th>
+                        <a asp-action="OrderHistory"
+                           asp-route-sortOrder="@ViewBag.NameSort"
+                           asp-route-CurrentFilter="@ViewBag.CurrentFilter"
+                           asp-route-minPrice="@ViewBag.searchMinPrice"
+                           asp-route-maxPrice="@ViewBag.searchMaxPrice"
+                           asp-route-startDate="@ViewBag.searchStartDate"
+                           asp-route-endDate="@ViewBag.searchEndDate"
+                           asp-route-pageSize="@ViewBag.pageSize">Code Transaction</a>
+                    </th>
+                    <th>Total Qty</th>
+                    <th>Amount</th>
+                    <th>Action</th>
+                </tr>
             </thead>
             <tbody>
-
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.CreateDate</td>
+                        <td>@item.CodeTransaction</td>
+                        <td>@item.TotalQty</td>
+                        <td>Rp. @item.Amount.ToString("#,##0")</td>
+                        <td>
+                            <button id="btn-more_@item.Id" dataid="@item.Id" class="btn btn-primary btn-more" data-toggle="collapse" href="#collapse_@item.Id">More</button>
+                        </td>
+                    </tr>
+                    <tr id="collapse_@item.Id" class="collapse">
+                        <td colspan="5">
+                            <div class="card card-primary">
+                                <div class="card-body">
+                                    <table class="table table-striped">
+                                        <thead class="table-primary">
+                                            <tr>
+                                                <td>Name Product</td>
+                                                <td>Qty</td>
+                                                <td>Price</td>
+                                                <td>Subtotal</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var detail in item.ListDetail)
+                                            {
+                                                <tr>
+                                                    <td>@detail.NameProduct</td>
+                                                    <td>@detail.Qty</td>
+                                                    <td>@detail.Price</td>
+                                                    <td>@detail.SubTotal</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
+    <div class="card-footer clearfix">
+        @{
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+        }
+        <div class="row">
+            <div class="col-2">
+                <form asp-action="OrderHistory"
+                      asp-route-CurrentFilter="@ViewBag.CurrentFilter"
+                      id="form-pageSize">
+                    <select id="pageSize" class="form-control" name="pageSize">
+                        <option value="3">3</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+
+                    </select>
+                </form>
+            </div>
+
+            <div class="col-10">
+                <div class="float-right">
+                    Page @Model.PageIndex of @Model.TotalPages
+                    <a asp-action="OrderHistory"
+                       asp-route-sortOrder="@ViewBag.CurrentSort"
+                       asp-route-pageNumber="@(Model.PageIndex - 1)"
+                       asp-route-CurrentFilter="@ViewBag.CurrentFilter"
+                       asp-route-pageSize="@ViewBag.pageSize"
+                       class="btn btn-default @prevDisabled">
+                        Previous
+                    </a>
+                    <a asp-action="OrderHistory"
+                       asp-route-sortOrder="@ViewBag.CurrentSort"
+                       asp-route-pageNumber="@(Model.PageIndex + 1)"
+                       asp-route-CurrentFilter="@ViewBag.CurrentFilter"
+                       asp-route-pageSize="@ViewBag.pageSize"
+                       class="btn btn-default @nextDisabled">
+                        Next
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<div class=""></div>
+
+<script>
+    $("#pageSize").val(@ViewBag.pageSize)
+    $("#pageSize").change(function () {
+        $("#form-pageSize").submit();
+    })
+
+    $(".btn-more").click(function () {
+        var id = $(this).attr("dataid")
+        var Text = $(this).text()
+
+        if (Text == "Less") {
+            $("#btn-more_" + id).text("More")
+            $("#btn-more_" + id).removeClass("btn-danger pr-3")
+            $("#btn-more_" + id).addClass("btn-primary")
+        }
+        else {
+            $("#btn-more_" + id).text("Less")
+            $("#btn-more_" + id).removeClass("btn-primary")
+            $("#btn-more_" + id).addClass("btn-danger pr-3")
+        }
+    })
+    $("#search").click(function () {
+        $("#header-modal-default").empty()
+        $("#header-modal-default").text("Search Order")
+
+        $("#body-modal-default").empty()
+        $("#body-modal-default").load("/Order/searchPage")
+
+        $("#modal-default").modal("show")
+    })
+</script>

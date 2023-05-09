@@ -27,9 +27,25 @@ namespace XPOS_API.Controllers
                                                  Id = h.Id,
                                                  Amount = h.Amount,
                                                  TotalQty = h.TotalQty,
-                                                 IsCheckout= h.IsCheckout,
+                                                 IsCheckout = h.IsCheckout,
                                                  CodeTransaction = h.CodeTransaction,
-                                                 CreateDate= h.CreateDate
+                                                 CreateDate = h.CreateDate,
+                                                 ListDetail = (from detail in db.TblOrderDetails
+                                                               join p in db.TblProducts
+                                                               on detail.IdProduct equals p.Id
+                                                               where detail.IsDelete == false && detail.IdHeader == h.Id
+                                                               select new VMOrderDetail
+                                                               {
+                                                                   Id = detail.Id,
+                                                                   Qty = detail.Qty,
+                                                                   SubTotal = detail.SubTotal,
+                                                                   IdHeader = detail.IdHeader,
+
+                                                                   IdProduct = p.Id,
+                                                                   NameProduct = p.NameProduct,
+                                                                   Price = p.Price
+                                                               }).ToList()
+
 
                                              }).ToList();
             return ListOrder;

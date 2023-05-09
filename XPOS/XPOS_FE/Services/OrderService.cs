@@ -38,7 +38,7 @@ namespace XPOS_FE.Services
         public async Task<List<VMOrderHeader>> GetAllOrder()
         {
             List<VMOrderHeader> ListOrder = new List<VMOrderHeader>();
-            string apiRespons = await client.GetStringAsync(RouteAPI + "APIOrder/GetAllOrder");
+            string apiRespons = await client.GetStringAsync(RouteAPI + "ApiOrder/GetAllOrder");
 
             ListOrder = JsonConvert.DeserializeObject<List<VMOrderHeader>>(apiRespons);
             return ListOrder;
