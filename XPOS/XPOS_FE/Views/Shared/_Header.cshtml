@@ -132,6 +132,19 @@
                 <i class="fas fa-th-large"></i>
             </a>
         </li>
+        <li class="nav-item">
+            <button class="btn btn-primary" id = "btn-login">Login</button>
+        </li>
     </ul>
 </nav>
 <!-- /.navbar -->
+
+<script>
+    $("#btn-login").click(function(){
+        $("#header-modal-default").remove()
+
+        $("#body-modal-default").empty()
+        $("#body-modal-default").load("/Auth/Login")
+        $("#modal-default").modal("show")
+    })
+</script>

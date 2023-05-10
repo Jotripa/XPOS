@@ -4,7 +4,7 @@
 <div class="card">
     <div class="card-header">
         <div class="card-title">
-            History Order
+            History Order (@ViewBag.TotalHistory)
         </div>
         <div class="card-tools">
             <div class="input-group-append">
@@ -17,7 +17,7 @@
     </div>
     <div class="card-body p-0">
         <div class="card-body">
-            Search Result :
+            Search Result :<br />
             @if (@ViewBag.CurrentFilter != null)
             {
                 <span class="bg-red">Code Transaction: @ViewBag.CurrentFilter</span>

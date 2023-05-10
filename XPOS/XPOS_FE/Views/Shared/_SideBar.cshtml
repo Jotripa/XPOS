@@ -1,4 +1,12 @@
-﻿  <!-- Main Sidebar Container -->
+﻿@using XPOS_FE.Services
+@inject OrderService order_service
+
+@{
+    int IdUser = 1;
+    int count = await order_service.TotalHistory(IdUser);
+}
+
+  <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
@@ -70,6 +78,7 @@
                         <p>
                             Transaction
                             <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-info right">@count</span>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">

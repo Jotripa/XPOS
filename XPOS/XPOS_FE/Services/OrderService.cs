@@ -43,5 +43,13 @@ namespace XPOS_FE.Services
             ListOrder = JsonConvert.DeserializeObject<List<VMOrderHeader>>(apiRespons);
             return ListOrder;
         }
+
+        public async Task<int> TotalHistory(int IdUser)
+        {
+            int count = 0;
+            string apiRespons = await client.GetStringAsync(RouteAPI + $"ApiOrder/TotalHistory/{IdUser}");
+            count = JsonConvert.DeserializeObject<int>(apiRespons);
+            return count;
+        }
     }
 }

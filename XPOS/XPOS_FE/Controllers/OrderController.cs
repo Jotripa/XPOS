@@ -52,6 +52,8 @@ namespace XPOS_FE.Controllers
             ViewBag.searchStartDate = pg.startDate;
             ViewBag.searchEndDate = pg.endDate;
 
+            ViewBag.TotalHistory = await order_service.TotalHistory(IdUser);
+
             if (pg.searchString != null)
             {
                 pg.pageNumber = 1;
@@ -105,5 +107,7 @@ namespace XPOS_FE.Controllers
         {
             return PartialView();
         }
+
+
     }
 }

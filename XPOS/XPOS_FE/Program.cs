@@ -11,7 +11,10 @@ builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<VariantService>();
 //Add Product service to call API
 builder.Services.AddScoped<ProductService>();
+//Add Order service to call API
 builder.Services.AddScoped<OrderService>();
+//Add Auth service to call API
+builder.Services.AddScoped<AuthService>();
 
 var app = builder.Build();
 

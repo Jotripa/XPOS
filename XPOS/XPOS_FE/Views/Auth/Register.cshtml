@@ -1,0 +1,149 @@
+﻿@using XPOS_API.Models
+@using XPOS_ViewModels
+@model VMUserCostumer
+
+
+<div class="card">
+    <div class="card-body register-card-body">
+        <p class="login-box-msg">Register a new membership</p>
+        <form asp-action="Register" method="post" id="form-register">
+            <div class="mb-3">
+                <input type="text" class="form-control" placeholder="Full name" name="FullName" id="FullName">
+
+            </div>
+            <div class="mb-3">
+                <input type="email" class="form-control" placeholder="Email" name="Email" id="Email">
+
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control" placeholder="Phone" name="Phone" id="Phone">
+
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control" placeholder="Adress" name="Address" id="Address">
+            </div>
+            <div class="mb-3">
+                <input type="password" class="form-control" placeholder="Password" name="Password" id="Password">
+            </div>
+            <div class="mb-3">
+                <input type="password" class="form-control" placeholder="Retype Password" name="RePassword" id="RePassword">
+            </div>
+            <div class="mb-3">
+                <label for="IdRole" class="form-label">Role</label>
+                @Html.DropDownListFor(a => a.IdRole, new SelectList(ViewBag.TblRole, "Id","RoleName"),
+                "Select Role",
+                new {@class="form-control"})
+            </div>
+
+            <div class="row">
+                <div class="col-8">
+                    <div class="icheck-primary">
+                        <input type="checkbox" id="agreeTerms" name="terms" value="agree">
+                        <label for="agreeTerms">
+                            I agree to the terms
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <button type="submit" class="btn btn-primary btn-block">Register</button>
+                </div>
+
+            </div>
+        </form>
+
+        <button class="btn btn-success text-center" id="btn-back-login">I already have a membership</button>
+    </div>
+
+</div>
+<script>
+    $("#btn-back-login").click(function () {
+        $("#header-modal-default").remove()
+
+        $("#body-modal-default").empty()
+        $("#body-modal-default").load("/Auth/Login")
+        $("#modal-default").modal("show")
+    })
+
+    $("#form-register").validate({
+        errorClass: "is-invalid text-danger",
+
+        rules: {
+            FullName: {
+                required: true,
+                minlength: 2
+            },
+            Email: {
+                required: true,
+                email: true
+            },
+            Phone: "required",
+            Address: "required",
+            Password: {
+                required: true,
+                minlength: 6
+            },
+            RePassword: {
+                required: true,
+                equalTo: "#Password"
+            },
+            IdRole: "required",
+            terms: "required"
+
+        },
+
+        messages: {
+            FullName: {
+                required: "Please enter full name",
+                minlength: "Enter atleast 2 character"
+            },
+            Email: {
+                required: "Please enter a valid email"
+            },
+            Phone: "Please enter phone number",
+            Address: "Please enter address",
+            Password: {
+                required: "Please enter password",
+                number: "Please input number only"
+            },
+            RePassword: {
+                required: "Password not match"
+            },
+            IdRole: {
+                required: "Please Select Role"
+            },
+            terms: {
+                required: "Please accept our policy"
+            }
+
+        },
+
+        submitHandler: function (form) {
+            var dataForm = $(form).serialize()
+
+            $.ajax({
+                url: "/Auth/Register",
+                method: "post",
+                data: dataForm,
+                dataType: "json",
+                success: function (respon) {
+
+                    if (respon.success) {
+
+                        $("#modal-default").modal("hide")
+                        toastr.success(respon.message)
+                        setTimeout(function () {
+                            window.location.reload();
+
+                        }, 2000);
+                    }
+                    else {
+                        toastr.error(respon.message)
+                    }
+                }
+            })
+        }
+    })
+
+</script>
+

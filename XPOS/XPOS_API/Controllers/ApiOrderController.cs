@@ -50,6 +50,15 @@ namespace XPOS_API.Controllers
                                              }).ToList();
             return ListOrder;
         }
+        [HttpGet("TotalHistory/{IdUser}")]
+        public int TotalHistory(int IdUser)
+        {
+            int count = 0;
+
+            count = db.TblOrderHeaders.Where(a => a.IdCustomer == IdUser).Count();
+
+            return count;
+        }
 
         [HttpPost("SubmitPayment")]
         public VMRespons SubmitPayment(VMOrderHeader dataHeader)

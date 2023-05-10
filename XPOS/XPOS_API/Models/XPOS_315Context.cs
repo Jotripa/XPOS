@@ -17,9 +17,12 @@ namespace XPOS_API.Models
         }
 
         public virtual DbSet<TblCategory> TblCategories { get; set; } = null!;
+        public virtual DbSet<TblCustomer> TblCustomers { get; set; } = null!;
         public virtual DbSet<TblOrderDetail> TblOrderDetails { get; set; } = null!;
         public virtual DbSet<TblOrderHeader> TblOrderHeaders { get; set; } = null!;
         public virtual DbSet<TblProduct> TblProducts { get; set; } = null!;
+        public virtual DbSet<TblRole> TblRoles { get; set; } = null!;
+        public virtual DbSet<TblUser> TblUsers { get; set; } = null!;
         public virtual DbSet<TblVariant> TblVariants { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -48,6 +51,21 @@ namespace XPOS_API.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<TblCustomer>(entity =>
+            {
+                entity.ToTable("TblCustomer");
+
+                entity.Property(e => e.Address).IsUnicode(false);
+
+                entity.Property(e => e.NameCustomer)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Phone)
+                    .HasMaxLength(15)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<TblOrderDetail>(entity =>
@@ -89,6 +107,32 @@ namespace XPOS_API.Models
                 entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
 
                 entity.Property(e => e.UpdateDate).HasColumnType("date");
+            });
+
+            modelBuilder.Entity<TblRole>(entity =>
+            {
+                entity.ToTable("TblRole");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.RoleName)
+                    .HasMaxLength(80)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<TblUser>(entity =>
+            {
+                entity.ToTable("TblUser");
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Password)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<TblVariant>(entity =>
