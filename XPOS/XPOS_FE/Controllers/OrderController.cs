@@ -9,13 +9,16 @@ namespace XPOS_FE.Controllers
     {
         private ProductService product_service;
         private OrderService order_service;
+        private readonly IHttpContextAccessor contextAccessor;
         private int IdUser = 1;
+        private int IdCustomer = 1;
 
         public OrderController(ProductService _product_service,
-            OrderService order_service)
+            OrderService order_service,IHttpContextAccessor contextAccessor)
         {
             this.product_service = _product_service;
             this.order_service = order_service;
+            this.IdCustomer = contextAccessor.HttpContext.Session.GetInt32("IdCustomer") ?? 1;
         }
         public async Task<IActionResult> Menu()
         {
@@ -33,7 +36,7 @@ namespace XPOS_FE.Controllers
             VMRespons respons = new VMRespons();
 
             dataHeader.CreateBy = IdUser;
-            dataHeader.IdCustomer = IdUser;
+            dataHeader.IdCustomer = IdCustomer;
 
             respons = await order_service.SubmitPayment(dataHeader);
             return Json(respons);

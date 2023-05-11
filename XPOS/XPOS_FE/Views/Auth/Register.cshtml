@@ -6,14 +6,14 @@
 <div class="card">
     <div class="card-body register-card-body">
         <p class="login-box-msg">Register a new membership</p>
-        <form asp-action="Register" method="post" id="form-register">
+        <form asp-action="SubmitRegister" method="post" id="form-register">
             <div class="mb-3">
-                <input type="text" class="form-control" placeholder="Full name" name="FullName" id="FullName">
+                <input type="text" class="form-control" placeholder="NameCustomer" name="NameCustomer" id="NameCustomer">
 
             </div>
             <div class="mb-3">
                 <input type="email" class="form-control" placeholder="Email" name="Email" id="Email">
-
+                <span id="val_email" class="is-invalid text-danger"></span>
             </div>
             <div class="mb-3">
                 <input type="text" class="form-control" placeholder="Phone" name="Phone" id="Phone">
@@ -69,7 +69,7 @@
         errorClass: "is-invalid text-danger",
 
         rules: {
-            FullName: {
+            NameCustomer: {
                 required: true,
                 minlength: 2
             },
@@ -93,7 +93,7 @@
         },
 
         messages: {
-            FullName: {
+            NameCustomer: {
                 required: "Please enter full name",
                 minlength: "Enter atleast 2 character"
             },
@@ -103,8 +103,7 @@
             Phone: "Please enter phone number",
             Address: "Please enter address",
             Password: {
-                required: "Please enter password",
-                number: "Please input number only"
+                required: "Please enter password"
             },
             RePassword: {
                 required: "Password not match"
@@ -119,28 +118,43 @@
         },
 
         submitHandler: function (form) {
-            var dataForm = $(form).serialize()
-
+            var email = $("#Email").val()
             $.ajax({
-                url: "/Auth/Register",
+                url: "/Auth/CheckEmailDuplicate",
                 method: "post",
-                data: dataForm,
-                dataType: "json",
+                data: { Email: email },
                 success: function (respon) {
-
-                    if (respon.success) {
-
-                        $("#modal-default").modal("hide")
-                        toastr.success(respon.message)
-                        setTimeout(function () {
-                            window.location.reload();
-
-                        }, 2000);
+                    if (respon == true) {
+                        $("#val_email").text("Email is already taken")
+                        return false;
                     }
                     else {
-                        toastr.error(respon.message)
+                        var dataForm = $(form).serialize()
+
+                        $.ajax({
+                            url: "/Auth/SubmitRegister",
+                            method: "post",
+                            data: dataForm,
+                            dataType: "json",
+                            success: function (respon) {
+
+                                if (respon.success) {
+
+                                    $("#modal-default").modal("hide")
+                                    toastr.success(respon.message)
+                                    setTimeout(function () {
+                                        window.location.reload();
+
+                                    }, 2000);
+                                }
+                                else {
+                                    toastr.error(respon.message)
+                                }
+                            }
+                        })
                     }
                 }
+
             })
         }
     })

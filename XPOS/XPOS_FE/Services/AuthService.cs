@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Drawing.Text;
 using System.Globalization;
+using System.Net.WebSockets;
+using System.Text;
 using XPOS_API.Models;
 using XPOS_ViewModels;
 
@@ -33,12 +35,49 @@ namespace XPOS_FE.Services
 
             return ListRole;
         }
-
-        public async Task<VMUserCostumer> Register()
+        public async Task<VMRespons> Register(VMUserCostumer data)
         {
-            VMUserCostumer ListRole = new VMUserCostumer();
+            string DataJson = JsonConvert.SerializeObject(data);
+            var content = new StringContent(DataJson, UnicodeEncoding.UTF8, "application/json");
+            string url = RouteAPI + "APIRegister/PostRegister";
+            var request = await client.PostAsync(url, content);
 
-            return ListRole;
+            if(request.IsSuccessStatusCode)
+            {
+                var apiRespons = await request.Content.ReadAsStringAsync();
+                respons = JsonConvert.DeserializeObject<VMRespons>(apiRespons);
+            }
+            else
+            {
+                respons.Success = false;
+                respons.Message = $"{request.StatusCode} : {request.ReasonPhrase}";
+            }
+            return respons;
+
         }
+        
+        public async Task<bool> CheckEmailDuplicate(string email)
+        {
+            bool IsDuplicate = false;
+            string apiRespons = await client.GetStringAsync(RouteAPI + $"APIRegister/CheckEmailDuplicate/{email}");
+            IsDuplicate = JsonConvert.DeserializeObject<bool>(apiRespons);
+            
+            return IsDuplicate;
+
+        }
+        public async Task<VMUserCostumer> CheckLogin(VMUserCostumer data)
+        {
+            VMUserCostumer dataUser = new VMUserCostumer();
+
+            string url = RouteAPI + $"APIRegister/CheckLogin/{data.Email}/{data.Password}";
+            var apiRespons = await client.GetStringAsync(url);
+
+            dataUser = JsonConvert.DeserializeObject<VMUserCostumer>(apiRespons);
+
+            return dataUser;
+
+        }
+
+
     }
 }

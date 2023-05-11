@@ -4,6 +4,8 @@ using System.Drawing.Printing;
 using XPOS_API.Models;
 using XPOS_FE.Services;
 using XPOS_ViewModels;
+using Microsoft.AspNetCore.Http;
+
 
 namespace XPOS_FE.Controllers
 {
@@ -11,9 +13,12 @@ namespace XPOS_FE.Controllers
     {
         private CategoryService category_service;
         private int IdUser = 1;
-        public CategoryController(CategoryService _categoryservice)
+        private readonly IHttpContextAccessor contextAccessor;
+        public CategoryController(CategoryService _categoryservice, IHttpContextAccessor _contextAccessor)
         {
             this.category_service = _categoryservice;
+            this.contextAccessor = _contextAccessor;
+            this.IdUser = contextAccessor.HttpContext.Session.GetInt32("IdUser") ?? 1;
         }
         public async Task<IActionResult> Index(VMSearchPage pg)
         {
@@ -59,6 +64,7 @@ namespace XPOS_FE.Controllers
         public async Task<IActionResult> Create(TblCategory data)
         {
             data.CreateBy = IdUser;
+
 
             VMRespons respons = await category_service.PostCategory(data);
             if (respons.Success)

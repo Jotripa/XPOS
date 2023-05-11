@@ -1,4 +1,10 @@
-﻿  <!-- Navbar -->
+﻿@using Microsoft.AspNetCore.Http;
+
+@{
+    int IdUser = Context.Session.GetInt32("IdUser") ?? 0;
+}
+
+<!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
@@ -133,18 +139,39 @@
             </a>
         </li>
         <li class="nav-item">
-            <button class="btn btn-primary" id = "btn-login">Login</button>
+            @if (IdUser == 0)
+            {
+                <button class="btn btn-primary" id="btn-login">Login</button>
+            }
+            else
+            {
+                <button class="btn btn-danger" id="btn-logout">Logout</button>
+            }
         </li>
     </ul>
 </nav>
 <!-- /.navbar -->
 
 <script>
-    $("#btn-login").click(function(){
+    $("#btn-login").click(function () {
         $("#header-modal-default").remove()
 
         $("#body-modal-default").empty()
         $("#body-modal-default").load("/Auth/Login")
         $("#modal-default").modal("show")
+    })
+    $("#btn-logout").click(function () {
+        $.ajax({
+            url: "/Auth/Logout",
+            method: "get",
+            success: function (respon) {
+                if (true) {
+                    window.location.href = "/Home/Index"
+                }
+                else {
+                    toastr.error("Error")
+                }
+            }
+        })
     })
 </script>

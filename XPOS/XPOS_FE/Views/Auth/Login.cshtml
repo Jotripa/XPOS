@@ -1,28 +1,19 @@
 ﻿
 
-<div class="login-logo">
-    <a href="../../index2.html"><b>Admin</b>LTE</a>
-</div>
+
 
 <div class="card">
     <div class="card-body login-card-body">
         <p class="login-box-msg">Sign in to start your session</p>
-        <form action="../../index3.html" method="post">
-            <div class="input-group mb-3">
-                <input type="email" class="form-control" placeholder="Email">
-                <div class="input-group-append">
-                    <div class="input-group-text">
-                        <span class="fas fa-envelope"></span>
-                    </div>
-                </div>
+        <form action="Login" method="post" id="form-check-login">
+            <div class="mb-3">
+                <input type="email" class="form-control" placeholder="Email" id="Email" name="Email">
             </div>
-            <div class="input-group mb-3">
-                <input type="password" class="form-control" placeholder="Password">
-                <div class="input-group-append">
-                    <div class="input-group-text">
-                        <span class="fas fa-lock"></span>
-                    </div>
-                </div>
+            <div class="mb-3">
+                <input type="password" class="form-control" placeholder="Password" id="Password" name="Password">
+            </div>
+            <div class="mb-3">
+                <p id="val_email" class="text-danger"></p>
             </div>
             <div class="row">
                 <div class="col-8">
@@ -48,11 +39,54 @@
 </div>
 
 <script>
-    $("#btn-register").click(function(){
+    $("#btn-register").click(function () {
         $("#header-modal-default").remove()
 
         $("#body-modal-default").empty()
         $("#body-modal-default").load("/Auth/Register")
         $("#modal-default").modal("show")
     })
+    $("#form-check-login").validate({
+        errorClass: "is-invalid text-danger",
+        rules: {
+            Email: {
+                required: true,
+                email: true
+            },
+            Password: "required"
+
+        },
+        messages: {
+            Email: {
+                required: "Please enter email",
+                email: "Please enter a valid email"
+            },
+            Password: "Please enter password"
+        },
+        submitHandler: function (form) {
+            debugger
+            var dataForm = $(form).serialize();
+            $.ajax({
+                url: "/Auth/Login",
+                method: "post",
+                data: dataForm,
+                dataType: "json",
+                success: function (respon) {
+                    debugger
+                    if (respon.success) {
+                        toastr.success(respon.message)
+                        setTimeout(function () {
+                            window.location.href = "/Home/Index"
+                            window.location.reload();
+
+                        }, 2000);
+                    }
+                    else {
+                        $("#val_email").text(respon.message)
+                    }
+                }
+            })
+        }
+    })
+
 </script>

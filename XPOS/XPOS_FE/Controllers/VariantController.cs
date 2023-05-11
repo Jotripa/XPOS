@@ -11,12 +11,15 @@ namespace XPOS_FE.Controllers
     {
         private VariantService variant_service;
         private CategoryService category_service;
+        private readonly IHttpContextAccessor contextAccessor;
         private int IdUser = 1;
 
-        public VariantController(VariantService _variantservice, CategoryService _categotyservice)
+        public VariantController(VariantService _variantservice, CategoryService _categotyservice, IHttpContextAccessor contextAccessor)
         {
             this.variant_service = _variantservice;
             this.category_service= _categotyservice;
+            this.IdUser = contextAccessor.HttpContext.Session.GetInt32("IdUser") ?? 1;
+
         }
         public async Task<IActionResult> Index(VMSearchPage pg)
         {
