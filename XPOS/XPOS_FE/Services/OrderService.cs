@@ -35,21 +35,31 @@ namespace XPOS_FE.Services
             }
             return respons;
         }
-        public async Task<List<VMOrderHeader>> GetAllOrder()
+        public async Task<List<VMOrderHeader>> GetAllOrder(int IdCustomer)
         {
             List<VMOrderHeader> ListOrder = new List<VMOrderHeader>();
-            string apiRespons = await client.GetStringAsync(RouteAPI + "ApiOrder/GetAllOrder");
+            string apiRespons = await client.GetStringAsync(RouteAPI + $"ApiOrder/GetAllOrder/{IdCustomer}");
 
             ListOrder = JsonConvert.DeserializeObject<List<VMOrderHeader>>(apiRespons);
             return ListOrder;
         }
 
-        public async Task<int> TotalHistory(int IdUser)
+        public async Task<int> TotalHistory(int IdCustomer)
         {
             int count = 0;
-            string apiRespons = await client.GetStringAsync(RouteAPI + $"ApiOrder/TotalHistory/{IdUser}");
+            string apiRespons = await client.GetStringAsync(RouteAPI + $"ApiOrder/TotalHistory/{IdCustomer}");
             count = JsonConvert.DeserializeObject<int>(apiRespons);
             return count;
+        }
+
+        public async Task<decimal> SumTotalHistory(decimal IdCustomer)
+        {
+            decimal sumTotalHistory = 0;
+
+            string apiRespons = await client.GetStringAsync(RouteAPI + $"ApiOrder/SumTotalHistory/{IdCustomer}");
+            sumTotalHistory = JsonConvert.DeserializeObject<decimal>(apiRespons);
+
+            return sumTotalHistory;
         }
     }
 }

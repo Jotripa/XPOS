@@ -10,15 +10,16 @@ namespace XPOS_FE.Controllers
         private ProductService product_service;
         private OrderService order_service;
         private readonly IHttpContextAccessor contextAccessor;
-        private int IdUser = 1;
-        private int IdCustomer = 1;
+        private int IdUser = 0;
+        private int IdCustomer = 0;
 
         public OrderController(ProductService _product_service,
             OrderService order_service,IHttpContextAccessor contextAccessor)
         {
             this.product_service = _product_service;
             this.order_service = order_service;
-            this.IdCustomer = contextAccessor.HttpContext.Session.GetInt32("IdCustomer") ?? 1;
+            this.IdCustomer = contextAccessor.HttpContext.Session.GetInt32("IdCustomer") ?? 0;
+            this.IdUser = contextAccessor.HttpContext.Session.GetInt32("IdUser") ?? 0;
         }
         public async Task<IActionResult> Menu()
         {
@@ -42,7 +43,7 @@ namespace XPOS_FE.Controllers
             return Json(respons);
         }
 
-        public async Task<IActionResult> OrderHistory(VMSearchPage pg)
+        public async Task<IActionResult> OrderHistory(VMSearchPage pg )
         {
             ViewBag.NameSort = String.IsNullOrEmpty(pg.sortOrder) ? "date_desc" : "";
             ViewBag.PriceSort = pg.sortOrder == "code" ? "code_desc" : "code";
@@ -54,6 +55,7 @@ namespace XPOS_FE.Controllers
 
             ViewBag.searchStartDate = pg.startDate;
             ViewBag.searchEndDate = pg.endDate;
+
 
             ViewBag.TotalHistory = await order_service.TotalHistory(IdUser);
 
@@ -67,7 +69,7 @@ namespace XPOS_FE.Controllers
             }
             ViewBag.CurrentFilter = pg.searchString;
 
-            List<VMOrderHeader> orderHeader = await order_service.GetAllOrder();
+            List<VMOrderHeader> orderHeader = await order_service.GetAllOrder(IdCustomer);
             if (!String.IsNullOrEmpty(pg.searchString))
             {
                 orderHeader = orderHeader.Where(a => a.CodeTransaction.Contains(pg.searchString)).ToList();

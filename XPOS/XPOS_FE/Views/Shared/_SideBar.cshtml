@@ -1,14 +1,18 @@
 ﻿@using XPOS_FE.Services
+@using XPOS_ViewModels
 @using Microsoft.AspNetCore.Http;
 @inject OrderService order_service
+@inject MenuService menu_service
 
 @{
-    int IdUser = 1;
+    int IdRole = Context.Session.GetInt32("IdRole") ?? 0;
+    int IdUser = Context.Session.GetInt32("IdUser") ?? 0;
     int count = await order_service.TotalHistory(IdUser);
     string NameCustomer = Context.Session.GetString("NameCustomer") ?? "noname";
+    List<VMMenu> ListMenu = await menu_service.Menu(IdRole);  
 }
 
-  <!-- Main Sidebar Container -->
+<!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
@@ -45,58 +49,95 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
-                <li class="nav-item menu-open">
-                    <a href="#" class="nav-link active">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>
-                            Master
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a asp-action="Index" asp-controller="Category" class="nav-link active">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Category</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-action="Index" asp-controller="Variant" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Variant</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-action="Index" asp-controller="Product" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Product</p>
-                            </a>
-                        </li>
-                    </ul>
+                @foreach (VMMenu item in ListMenu)
+                {
+                    <li class="nav-item menu-open">
+                        <a href="#" class="nav-link active">
+                            <i class="@item.MenuIcon"></i>
+                            <p>
+                                @item.MenuName
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @foreach (VMMenu menuitem in item.childMenu)
+                            {
+                                @if (menuitem.MenuAction == "OrderHistory")
+                                {
+                                    <li class="nav-item">
+                                        <a asp-action="@menuitem.MenuAction" asp-controller="@menuitem.MenuController" asp-route-IdCustomer="@IdUser" class="nav-link active">
+                                            <i class="@menuitem.MenuIcon" nav-icon"></i>
+                                            <p>@menuitem.MenuName</p>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item">
+                                        <a asp-action="@menuitem.MenuAction" asp-controller="@menuitem.MenuController" class="nav-link active">
+                                            <i class="@menuitem.MenuIcon" nav-icon"></i>
+                                            <p>@menuitem.MenuName</p>
+                                        </a>
+                                    </li>
+                                }
+
+                        }
+                        </ul>
+                    </li>
+                }
+                @*<li class="nav-item menu-open">
+                <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                Master
+                <i class="right fas fa-angle-left"></i>
+                </p>
+                </a>
+                <ul class="nav nav-treeview">
+                <li class="nav-item">
+                <a asp-action="Index" asp-controller="Category" class="nav-link active">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Category</p>
+                </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-copy"></i>
-                        <p>
-                            Transaction
-                            <i class="fas fa-angle-left right"></i>
-                            <span class="badge badge-info right">@count</span>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a asp-action="Menu" asp-controller="Order" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Menu Catalog</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-action="OrderHistory" asp-controller="Order" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Order History</p>
-                            </a>
-                        </li>
-                    </ul>
+                <a asp-action="Index" asp-controller="Variant" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Variant</p>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a asp-action="Index" asp-controller="Product" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Product</p>
+                </a>
+                </li>
+                </ul>
+                </li>
+                <li class="nav-item">
+                <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-copy"></i>
+                <p>
+                Transaction
+                <i class="fas fa-angle-left right"></i>
+                <span class="badge badge-info right">@count</span>
+                </p>
+                </a>
+                <ul class="nav nav-treeview">
+                <li class="nav-item">
+                <a asp-action="Menu" asp-controller="Order" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Menu Catalog</p>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a asp-action="OrderHistory" asp-controller="Order" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Order History</p>
+                </a>
+                </li>
+                </ul>*@
+            </ul>
         </nav>
         <!-- /.sidebar-menu -->
     </div>

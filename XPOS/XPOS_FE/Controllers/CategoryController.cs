@@ -12,13 +12,13 @@ namespace XPOS_FE.Controllers
     public class CategoryController : Controller
     {
         private CategoryService category_service;
-        private int IdUser = 1;
+        private int IdUser = 0;
         private readonly IHttpContextAccessor contextAccessor;
         public CategoryController(CategoryService _categoryservice, IHttpContextAccessor _contextAccessor)
         {
             this.category_service = _categoryservice;
             this.contextAccessor = _contextAccessor;
-            this.IdUser = contextAccessor.HttpContext.Session.GetInt32("IdUser") ?? 1;
+            this.IdUser = contextAccessor.HttpContext.Session.GetInt32("IdUser") ?? 0;
         }
         public async Task<IActionResult> Index(VMSearchPage pg)
         {

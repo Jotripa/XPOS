@@ -1,4 +1,18 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http;
+
+
+@{
+    int IdUser = Context.Session.GetInt32("IdUser") ?? 0;
+    string ClassLogin = "";
+
+    @if (IdUser != 0)
+    {
+        ClassLogin = "content-wrapper";
+    }
+
+
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -12,7 +26,6 @@
     <script src="~/adminlte/plugins/jquery/jquery.min.js"></script>
     <script src="~/adminlte/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="~/adminlte/plugins/jquery-validation/additional-methods.min.js"></script><!-- Toastr -->
-    
     <!-- Toastr -->
     <link rel="stylesheet" href="~/adminlte/plugins/toastr/toastr.min.css">
     <script src="~/adminlte/plugins/toastr/toastr.min.js"></script>
@@ -44,21 +57,29 @@
 </head>
 <body>
     <partial name="_Header" />
-    <partial name="_SideBar" />
-
-    <div class="content-wrapper">
-        <section class="content">
-            <main role="main" class="pb-3">
-                @RenderBody()
-            </main>
-        </section>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - XPOS_FE - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    @if (IdUser != 0)
+    {
+        <partial name="_Sidebar" />
+        <div class="@ClassLogin">
+            <section class="content">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </section>
         </div>
-    </footer>
+    }
+    else
+    {
+        <div class="@ClassLogin">
+            <section class="content">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </section>
+        </div>
+
+    }
+
 
 
     <div class="modal fade" id="modal-default">
@@ -138,7 +159,7 @@
 </body>
 </html>
 <style>
-    .img-responsive{
+    .img-responsive {
         width: auto;
         height: 200px !important;
     }

@@ -8,7 +8,7 @@ namespace XPOS_FE.Controllers
     public class AuthController : Controller
     {
         private AuthService auth_authService;
-        private int IdUser = 1;
+        private int IdUser = 0;
         public AuthController(AuthService auth_authService)
         {
             this.auth_authService= auth_authService;

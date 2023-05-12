@@ -17,11 +17,11 @@ namespace XPOS_API.Controllers
         {
             this.db = _db;
         }
-        [HttpGet("GetAllOrder")]
-        public List<VMOrderHeader> GetAllOrder()
+        [HttpGet("GetAllOrder/{IdCustomer}")]
+        public List<VMOrderHeader> GetAllOrder(int IdCustomer)
         {
             List<VMOrderHeader> ListOrder = (from h in db.TblOrderHeaders
-                                             where h.IsDelete == false
+                                             where h.IsDelete == false && h.IdCustomer == IdCustomer
                                              select new VMOrderHeader
                                              {
                                                  Id = h.Id,
@@ -50,14 +50,23 @@ namespace XPOS_API.Controllers
                                              }).ToList();
             return ListOrder;
         }
-        [HttpGet("TotalHistory/{IdUser}")]
-        public int TotalHistory(int IdUser)
+        [HttpGet("TotalHistory/{IdCustomer}")]
+        public int TotalHistory(int IdCustomer)
         {
             int count = 0;
 
-            count = db.TblOrderHeaders.Where(a => a.IdCustomer == IdUser).Count();
+            count = db.TblOrderHeaders.Where(a => a.IdCustomer == IdCustomer).Count();
 
             return count;
+        }
+
+        [HttpGet("SumTotalHistory/{IdCustomer}")]
+        public decimal SumTotalHistory(int IdCustomer)
+        {
+            decimal sumTotalHistory = 0;
+            sumTotalHistory = db.TblOrderHeaders.Where(a => a.IdCustomer == IdCustomer && 
+            a.CreateDate.Year == DateTime.Now.Year).Sum(a => a.Amount);
+            return sumTotalHistory;
         }
 
         [HttpPost("SubmitPayment")]

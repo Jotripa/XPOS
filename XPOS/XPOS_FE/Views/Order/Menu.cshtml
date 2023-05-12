@@ -1,6 +1,11 @@
 ﻿@using XPOS_ViewModels;
+@using XPOS_API.Models;
 @model List<VMProduct>
 
+@{
+    int IdUser = Context.Session.GetInt32("IdUser") ?? 0;
+    int IdCustomer = Context.Session.GetInt32("IdCustomer") ?? 0;
+}
 <div class="card">
     <div class="card-header">
         <div class="row ">
@@ -77,6 +82,7 @@
                                         <i class="fas fa-plus"></i>
                                     </button>
                                 </div>
+                                <input type="hidden" id="IdCustomer" value="@IdUser"></input>
                             </div>
                         </div>
 
@@ -100,8 +106,9 @@
 
 
     $("#checkout").click(function () {
-
+        var IdCustomer = $("#IdCustomer").val()
         dataHeader = {
+            IdCustomer: IdCustomer,
             Amount: totalEstimate,
             TotalQty: totalProduct,
             ListDetail: ListDetail

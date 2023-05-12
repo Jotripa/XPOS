@@ -24,6 +24,8 @@ builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<OrderService>();
 //Add Auth service to call API
 builder.Services.AddScoped<AuthService>();
+//Add Menu service to call API
+builder.Services.AddScoped<MenuService>();
 
 
 

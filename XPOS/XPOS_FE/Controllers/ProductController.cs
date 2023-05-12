@@ -13,7 +13,7 @@ namespace XPOS_FE.Controllers
         private ProductService product_service;
         private readonly IWebHostEnvironment web_host;
         private readonly IHttpContextAccessor contextAccessor;
-        private int IdUser = 1;
+        private int IdUser = 0;
 
         public ProductController(VariantService _variantservice, 
             CategoryService _categotyservice, 
@@ -25,7 +25,7 @@ namespace XPOS_FE.Controllers
             this.category_service = _categotyservice;
             this.product_service = _productservice;
             this.web_host = webHost;
-            this.IdUser = contextAccessor.HttpContext.Session.GetInt32("IdUser") ?? 1;
+            this.IdUser = contextAccessor.HttpContext.Session.GetInt32("IdUser") ?? 0;
         }
 
         #region CRUD

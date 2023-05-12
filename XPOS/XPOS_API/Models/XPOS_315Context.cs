@@ -18,6 +18,8 @@ namespace XPOS_API.Models
 
         public virtual DbSet<TblCategory> TblCategories { get; set; } = null!;
         public virtual DbSet<TblCustomer> TblCustomers { get; set; } = null!;
+        public virtual DbSet<TblMenu> TblMenus { get; set; } = null!;
+        public virtual DbSet<TblMenuAccess> TblMenuAccesses { get; set; } = null!;
         public virtual DbSet<TblOrderDetail> TblOrderDetails { get; set; } = null!;
         public virtual DbSet<TblOrderHeader> TblOrderHeaders { get; set; } = null!;
         public virtual DbSet<TblProduct> TblProducts { get; set; } = null!;
@@ -66,6 +68,40 @@ namespace XPOS_API.Models
                 entity.Property(e => e.Phone)
                     .HasMaxLength(15)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<TblMenu>(entity =>
+            {
+                entity.ToTable("TblMenu");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.MenuAction)
+                    .HasMaxLength(80)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MenuController)
+                    .HasMaxLength(80)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MenuIcon)
+                    .HasMaxLength(80)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MenuName)
+                    .HasMaxLength(80)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<TblMenuAccess>(entity =>
+            {
+                entity.ToTable("TblMenuAccess");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<TblOrderDetail>(entity =>
