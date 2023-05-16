@@ -1,0 +1,56 @@
+version: '3.4'
+
+services:
+  sqldb:
+    image: mcr.microsoft.com/mssql/server
+    container_name: sqldb
+    environment: 
+        - ACCEPT EULA=Y
+        - MSSQL_SA_PASSWORD=P@ssword
+    ports:
+        - "1442:1443"
+    expose:
+       - "1432"
+    networks:
+       - xpos
+    volumes:
+       - C:/dbxpos315/data:/var/opt/mssql/data
+       - C:/dbxpos315/log:/var/opt/mssql/log     
+       - C:/dbxpos315/secrets:/var/opt/mssql/secrets     
+       
+
+  xpos_api:
+    image: ${DOCKER_REGISTRY-}xposapi
+    container_name: xpos_api
+    build:
+      context: .
+      dockerfile: XPOS_API/Dockerfile
+    ports:
+        - "5010:80"
+    expose:
+        - "5010"
+    networks:
+        - xpos
+    depends_on:
+        - sqldb
+
+  
+
+  xpos_fe:
+    image: ${DOCKER_REGISTRY-}xposfe
+    build:
+      context: .
+      dockerfile: XPOS_FE/Dockerfile
+    ports:
+        - "7010:80"
+    expose:
+        - "7010"
+    networks:
+        - xpos
+    depends_on:
+        - xpos_api
+
+networks:
+  xpos:
+    driver: "bridge"
+

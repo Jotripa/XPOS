@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  xpos_api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
+
+  xpos_fe:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
+
